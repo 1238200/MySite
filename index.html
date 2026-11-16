@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title></title>
+
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer components {
+      .btn {
+        @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium transition duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 disabled:cursor-not-allowed disabled:opacity-50;
+      }
+
+      .btn-primary {
+        @apply btn bg-brand-600 text-white hover:bg-brand-700 active:scale-[0.98];
+      }
+
+      .btn-secondary {
+        @apply btn border border-slate-300 bg-white text-slate-800 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800;
+      }
+
+      .card {
+        @apply rounded-lg border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900;
+      }
+
+      .input {
+        @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100;
+      }
+
+      .section {
+        @apply mx-auto max-w-6xl px-4 py-16;
+      }
+
+      .title {
+        @apply text-2xl font-bold tracking-tight sm:text-3xl;
+      }
+
+      .text-muted {
+        @apply text-slate-600 dark:text-slate-400;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-white text-slate-900 transition-colors duration-200 dark:bg-slate-950 dark:text-slate-100">
+
+  <header class="sticky top-0 z-50 border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+      <a href="#main" class="font-bold"></a>
+
+      <nav aria-label="Основная навигация" class="hidden md:block">
+        <ul class="flex gap-6 text-sm">
+          <li><a href="#board" class="hover:text-brand-600">Доска</a></li>
+          <li><a href="#features" class="hover:text-brand-600">Возможности</a></li>
+          <li><a href="#pricing" class="hover:text-brand-600">Тарифы</a></li>
+          <li><a href="#faq" class="hover:text-brand-600">FAQ</a></li>
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <button id="themeBtn" class="btn-secondary" aria-label="Переключить тему">🌙</button>
+        <button class="btn-primary hidden sm:inline-flex" data-modal-open>Создать проект</button>
+        <button id="menuBtn" class="btn-secondary md:hidden" aria-expanded="false" aria-controls="mobileMenu" aria-label="Открыть меню">☰</button>
+      </div>
+    </div>
+
+    <div id="mobileMenu" class="hidden border-t border-slate-200 bg-white px-4 py-3 md:hidden dark:border-slate-800 dark:bg-slate-950">
+      <nav aria-label="навигация">
+        <ul class="grid gap-1 text-sm">
+          <li><a href="#board" class="block rounded-lg px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800">Доска</a></li>
+          <li><a href="#features" class="block rounded-lg px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800">Возможности</a></li>
+          <li><a href="#pricing" class="block rounded-lg px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800">Тарифы</a></li>
+          <li><a href="#faq" class="block rounded-lg px-3 py-2 hover:bg-slate-100 dark:hover:bg-slate-800">FAQ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <section class="section">
+      <div class="max-w-2xl">
+        <h1 class="text-3xl font-bold leading-tight sm:text-5xl">
+          Управляйте задачами команды без лишней сложности
+        </h1>
+
+        <p class="mt-4 text-muted">
+          Kanban-доска для планирования задач, назначения исполнителей и контроля прогресса.
+        </p>
+
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+          <a href="#board" class="btn-primary">Открыть доску</a>
+          <button class="btn-secondary" data-modal-open>Создать проект</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="board" class="section border-t border-slate-200 pt-12 dark:border-slate-800" aria-labelledby="boardTitle">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <h2 id="boardTitle" class="title">Доска проекта</h2>
+          <p class="mt-2 text-muted">Добавляйте задачи, меняйте статус и назначайте ответственных.</p>
+        </div>
+
+        <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+          <input id="taskSearch" type="search" placeholder="Поиск задачи..." class="input sm:w-56" aria-label="Поиск задач" />
+
+          <select id="assigneeFilter" class="input sm:w-48" aria-label="Фильтр по исполнителю">
+            <option value="all">Все исполнители</option>
+            <option value="anna">Анна</option>
+            <option value="dmitry">Дмитрий</option>
+            <option value="maria">Мария</option>
+          </select>
+        </div>
+      </div>
+
+      <form id="addTaskForm" class="card mt-6 grid gap-3 p-4 sm:grid-cols-[1fr_160px_150px_auto]">
+        <input id="taskTitle" class="input" required placeholder="Новая задача" aria-label="Название задачи" />
+
+        <select id="taskAssignee" class="input" aria-label="Исполнитель">
+          <option value="anna">Анна</option>
+          <option value="dmitry">Дмитрий</option>
+          <option value="maria">Мария</option>
+        </select>
+
+        <select id="taskPriority" class="input" aria-label="Приоритет">
+          <option value="low">Низкий</option>
+          <option value="medium">Средний</option>
+          <option value="high">Высокий</option>
+        </select>
+
+        <button class="btn-primary">Добавить</button>
+      </form>
+
+      <div class="mt-6 grid gap-4 lg:grid-cols-3">
+        <section class="card p-4" aria-labelledby="todoTitle">
+          <header class="mb-3 flex items-center justify-between">
+            <h3 id="todoTitle" class="font-semibold">To Do</h3>
+            <span id="todoCount" class="rounded-md bg-slate-100 px-2 py-0.5 text-xs dark:bg-slate-800">0</span>
+          </header>
+          <div class="column flex min-h-[240px] flex-col gap-3" data-status="todo"></div>
+        </section>
+
+        <section class="card p-4" aria-labelledby="progressTitle">
+          <header class="mb-3 flex items-center justify-between">
+            <h3 id="progressTitle" class="font-semibold">In Progress</h3>
+            <span id="progressCount" class="rounded-md bg-slate-100 px-2 py-0.5 text-xs dark:bg-slate-800">0</span>
+          </header>
+          <div class="column flex min-h-[240px] flex-col gap-3" data-status="progress"></div>
+        </section>
+
+        <section class="card p-4" aria-labelledby="doneTitle">
+          <header class="mb-3 flex items-center justify-between">
+            <h3 id="doneTitle" class="font-semibold">Done</h3>
+            <span id="doneCount" class="rounded-md bg-slate-100 px-2 py-0.5 text-xs dark:bg-slate-800">0</span>
+          </header>
+          <div class="column flex min-h-[240px] flex-col gap-3" data-status="done"></div>
+        </section>
+      </div>
+
+      <p id="boardEmpty" class="card mt-4 hidden p-6 text-center text-muted">
+        Задач не найдено. Измените поиск или фильтр.
+      </p>
+    </section>
+
+    <section class="section border-t border-slate-200 pt-12 dark:border-slate-800" aria-label="Рекламное место">
+      <div class="mx-auto flex max-w-3xl items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-slate-50 p-10 dark:border-slate-700 dark:bg-slate-900">
+        <span class="text-sm font-medium text-slate-500 dark:text-slate-400">
+          Рекламное место 
+        </span>
+      </div>
+    </section>
+    <section id="features" class="section border-t border-slate-200 pt-12 dark:border-slate-800" aria-labelledby="featuresTitle">
+      <h2 id="featuresTitle" class="title">Что есть в TaskFlow</h2>
+
+      <div class="mt-8 grid gap-4 md:grid-cols-3">
+        <article class="card p-6">
+          <h3 class="font-semibold">Kanban-доска</h3>
+          <p class="mt-2 text-sm text-muted">Задачи перемещаются между To Do, In Progress и Done.</p>
+        </article>
+
+        <article class="card p-6">
+          <h3 class="font-semibold">Исполнители</h3>
+          <p class="mt-2 text-sm text-muted">Каждой задаче можно назначить ответственного и приоритет.</p>
+        </article>
+
+        <article class="card p-6">
+          <h3 class="font-semibold">Поиск и фильтры</h3>
+          <p class="mt-2 text-sm text-muted">Быстро находите нужную задачу по названию или человеку.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="pricing" class="section border-t border-slate-200 pt-12 dark:border-slate-800" aria-labelledby="pricingTitle">
+      <h2 id="pricingTitle" class="title">Тарифы</h2>
+
+      <div class="mt-8 grid gap-4 lg:grid-cols-3">
+        <article class="card p-6" data-plan="Free">
+          <h3 class="font-semibold">для нищих, униженых и оскорбленных</h3>
+          <p class="mt-2 text-2xl font-bold">0 руб.</p>
+          <ul class="mt-4 space-y-2 text-sm text-muted">
+            <li>До 5 участников</li>
+            <li>2 проекта</li>
+            <li>Kanban-доска</li>
+          </ul>
+          <button class="btn-secondary mt-6 w-full plan-btn">Выбрать</button>
+        </article>
+
+        <article class="card relative p-6 ring-2 ring-brand-500" data-plan="Pro">
+          <span class="absolute -top-2.5 left-4 rounded-md bg-brand-600 px-2 py-0.5 text-xs font-semibold text-white">Популярный</span>
+          <h3 class="font-semibold">для средних слоев населения</h3>
+          <p class="mt-2 text-2xl font-bold">100 руб.</p>
+          <ul class="mt-4 space-y-2 text-sm text-muted">
+            <li>До 25 участников</li>
+            <li>Неограниченные проекты</li>
+            <li>Отчёты</li>
+          </ul>
+          <button class="btn-primary mt-6 w-full plan-btn">Выбрать</button>
+        </article>
+
+        <article class="card p-6" data-plan="Business">
+          <h3 class="font-semibold">Для тех кто не хочет думать головой, но готов платить (с ИИ)</h3>
+          <p class="mt-2 text-2xl font-bold">600 руб.</p>
+          <ul class="mt-4 space-y-2 text-sm text-muted">
+            <li>Роли и права</li>
+            <li>Аналитика</li>
+            <li>Поддержка</li>
+            <li>✨ИИ✨</li>
+          </ul>
+          <button class="btn-secondary mt-6 w-full plan-btn">Связаться</button>
+        </article>
+      </div>
+
+      <p id="planResult" class="mt-4 text-sm font-medium text-brand-600 dark:text-brand-200" aria-live="polite">
+        Тариф пока не выбран.
+      </p>
+    </section>
+
+    <section id="faq" class="section border-t border-slate-200 pt-12 dark:border-slate-800" aria-labelledby="faqTitle">
+      <h2 id="faqTitle" class="title">Частые вопросы</h2>
+
+      <div class="mt-8 max-w-3xl space-y-3">
+        <details class="card p-5">
+          <summary class="cursor-pointer font-medium">Можно ли перетаскивать задачи?</summary>
+          <p class="mt-2 text-sm text-muted">Да, карточку можно перетащить в другую колонку.</p>
+        </details>
+
+        <details class="card p-5">
+          <summary class="cursor-pointer font-medium">Можно ли назначать исполнителей?</summary>
+          <p class="mt-2 text-sm text-muted">Да, при добавлении задачи выбирается исполнитель и приоритет.</p>
+        </details>
+
+        <details class="card p-5">
+          <summary class="cursor-pointer font-medium">Подходит ли TaskFlow небольшой команде?</summary>
+          <p class="mt-2 text-sm text-muted">Да, бесплатный тариф рассчитан на команду до пяти человек.</p>
+        </details>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="border-t border-slate-200 py-10 dark:border-slate-800">
+    <div class="mx-auto max-w-6xl px-4">
+      <p class="text-sm text-muted">© 2026 TaskFlow</p>
+    </div>
+  </footer>
+
+  <div id="modal" class="fixed inset-0 z-100 hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/50" data-modal-close></div>
+
+    <div role="dialog" aria-modal="true" aria-labelledby="modalTitle" class="card relative w-full max-w-sm p-6">
+      <h2 id="modalTitle" class="font-semibold">Создать проект</h2>
+      <p class="mt-2 text-sm text-muted">Проект будет добавлен в рабочее пространство.</p>
+
+      <div class="mt-6 flex justify-end gap-2">
+        <button class="btn-secondary" data-modal-close>Позже</button>
+        <a href="#board" class="btn-primary" data-modal-close>Открыть доску</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="fixed bottom-5 left-1/2 z-100 hidden -translate-x-1/2 rounded-lg bg-slate-900 px-4 py-2 text-sm text-white dark:bg-white dark:text-slate-900">
+    Задача добавлена
+  </div>
+
+  <script>
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('themeBtn');
+
+    if (localStorage.getItem('theme') === 'dark') {
+      root.classList.add('dark');
+      themeBtn.textContent = '☀️';
+    }
+
+    themeBtn.addEventListener('click', () => {
+      const dark = root.classList.toggle('dark');
+      themeBtn.textContent = dark ? '☀️' : '🌙';
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+    });
+
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuBtn.addEventListener('click', () => {
+      const open = !mobileMenu.classList.toggle('hidden');
+      menuBtn.setAttribute('aria-expanded', String(open));
+    });
+
+    const modal = document.getElementById('modal');
+
+    document.querySelectorAll('[data-modal-open]').forEach(button => {
+      button.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      });
+    });
+
+    document.querySelectorAll('[data-modal-close]').forEach(button => {
+      button.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      });
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }
+    });
+
+    let tasks = [
+      { id: 1, title: 'Собрать требования', status: 'todo', assignee: 'anna', priority: 'high' },
+      { id: 2, title: 'Подготовить сценарии', status: 'todo', assignee: 'maria', priority: 'medium' },
+      { id: 3, title: 'Сверстать главный экран', status: 'progress', assignee: 'dmitry', priority: 'high' },
+      { id: 4, title: 'Настроить авторизацию', status: 'progress', assignee: 'anna', priority: 'medium' },
+      { id: 5, title: 'Провести тестирование', status: 'done', assignee: 'maria', priority: 'low' }
+    ];
+
+    const columns = document.querySelectorAll('.column');
+    const search = document.getElementById('taskSearch');
+    const assigneeFilter = document.getElementById('assigneeFilter');
+    const toast = document.getElementById('toast');
+
+    const people = {
+      anna: 'Анна',
+      dmitry: 'Дмитрий',
+      maria: 'Мария'
+    };
+
+    const priorities = {
+      low: 'Низкий',
+      medium: 'Средний',
+      high: 'Высокий'
+    };
+
+    function createTaskCard(task) {
+      const card = document.createElement('article');
+      card.className = 'card cursor-grab p-3 text-sm active:cursor-grabbing';
+      card.draggable = true;
+      card.dataset.id = task.id;
+
+      card.innerHTML = `
+        <div class="flex items-start justify-between gap-2">
+          <p class="font-medium">${task.title}</p>
+          <button class="text-slate-400 hover:text-red-600" aria-label="Удалить задачу">✕</button>
+        </div>
+
+        <p class="mt-2 text-xs text-muted">
+          ${people[task.assignee]} · ${priorities[task.priority]}
+        </p>
+      `;
+
+      card.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', String(task.id));
+      });
+
+      card.querySelector('button').addEventListener('click', () => {
+        tasks = tasks.filter(item => item.id !== task.id);
+        renderBoard();
+      });
+
+      return card;
+    }
+
+    function renderBoard() {
+      columns.forEach(column => {
+        column.innerHTML = '';
+
+        const status = column.dataset.status;
+        const query = search.value.trim().toLowerCase();
+        const assignee = assigneeFilter.value;
+
+        const visibleTasks = tasks.filter(task => {
+          return task.status === status &&
+            (assignee === 'all' || task.assignee === assignee) &&
+            task.title.toLowerCase().includes(query);
+        });
+
+        visibleTasks.forEach(task => column.appendChild(createTaskCard(task)));
+      });
+
+      document.getElementById('todoCount').textContent = tasks.filter(t => t.status === 'todo').length;
+      document.getElementById('progressCount').textContent = tasks.filter(t => t.status === 'progress').length;
+      document.getElementById('doneCount').textContent = tasks.filter(t => t.status === 'done').length;
+
+      const hasTasks = [...columns].some(column => column.children.length > 0);
+      document.getElementById('boardEmpty').classList.toggle('hidden', hasTasks);
+    }
+
+    columns.forEach(column => {
+      column.addEventListener('dragover', e => e.preventDefault());
+
+      column.addEventListener('drop', e => {
+        e.preventDefault();
+
+        const id = Number(e.dataTransfer.getData('text/plain'));
+        const task = tasks.find(item => item.id === id);
+
+        if (task) {
+          task.status = column.dataset.status;
+          renderBoard();
+        }
+      });
+    });
+
+    search.addEventListener('input', renderBoard);
+    assigneeFilter.addEventListener('change', renderBoard);
+
+    document.getElementById('addTaskForm').addEventListener('submit', e => {
+      e.preventDefault();
+
+      const title = document.getElementById('taskTitle');
+      const assignee = document.getElementById('taskAssignee');
+      const priority = document.getElementById('taskPriority');
+
+      if (!title.value.trim()) return;
+
+      tasks.push({
+        id: Date.now(),
+        title: title.value.trim(),
+        status: 'todo',
+        assignee: assignee.value,
+        priority: priority.value
+      });
+
+      title.value = '';
+      renderBoard();
+
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 2000);
+    });
+
+    renderBoard();
+
+    const planResult = document.getElementById('planResult');
+
+    document.querySelectorAll('.plan-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const plan = button.closest('[data-plan]').dataset.plan;
+        planResult.textContent = `Выбран тариф ${plan}.`;
+
+        document.querySelectorAll('[data-plan]').forEach(card => {
+          card.classList.remove('ring-2', 'ring-brand-500');
+        });
+
+        button.closest('[data-plan]').classList.add('ring-2', 'ring-brand-500');
+      });
+    });
+  </script>
+</body>
+</html>
