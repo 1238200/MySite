@@ -1,1570 +1,602 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <meta
-    name="description"
-    content="Неофициальный учебный лендинг «Дом с Алисой»: устройства, сценарии и демонстрация управления освещением."
-  >
-
+  <meta name="description" content="Неофициальный учебный лендинг «Дом с Алисой»: устройства, сценарии и демонстрация управления освещением.">
   <meta name="theme-color" content="#faf5ff">
+  <title>Дом с Алисой — учебный лендинг</title>
 
-  <title></title>
-
-  <!-- Восстановление темы до отображения страницы -->
   <script>
-    try {
-      document.documentElement.classList.toggle(
-        'dark',
-        localStorage.getItem('alice-theme') === 'evening'
-      );
-    } catch {}
+    try { document.documentElement.classList.toggle('dark', localStorage.getItem('alice-theme') === 'evening'); } catch {}
   </script>
 
-  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com/3.4.16"></script>
-
-  <script>
-    tailwind.config = {
-      darkMode: 'class'
-    };
-  </script>
-
-  <!-- Vue -->
+  <script>tailwind.config = { darkMode: 'class' };</script>
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 </head>
 
-<body
-  class="min-h-screen bg-purple-50 font-sans text-slate-800 antialiased transition-colors duration-300 dark:bg-slate-300 dark:text-slate-900"
->
+<body class="min-h-screen bg-purple-50 font-sans text-slate-800 antialiased transition-colors duration-300 dark:bg-slate-300 dark:text-slate-900">
 
 <div id="app" class="hidden">
 
-  <!-- ШАПКА -->
-  <header
-    class="sticky top-0 z-50 border-b border-violet-200 bg-purple-50/95 backdrop-blur-xl transition-colors duration-300 dark:border-violet-300 dark:bg-slate-300/95"
-  >
-    <div
-      class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-4"
-    >
-      <a
-        href="#home"
-        @click="menuOpen = false"
-        aria-label="Дом с Алисой — наверх"
-        class="flex items-center gap-3 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-600"
-      >
-        <!-- Логотип со снегом -->
-        <span
-          class="relative inline-flex h-10 w-10 shrink-0 items-center justify-center"
-        >
-          <img
-            :src="images.logo"
-            alt=""
-            width="36"
-            height="36"
-            class="h-9 w-9 object-contain"
-          >
-
-          <span
-            class="pointer-events-none absolute left-0.5 right-0.5 top-0.5 h-2.5 -rotate-6 rounded-full border border-sky-100 bg-white shadow-sm"
-            aria-hidden="true"
-          ></span>
-
-          <span
-            class="pointer-events-none absolute left-2 top-2 h-2 w-1.5 rounded-b-full bg-white"
-            aria-hidden="true"
-          ></span>
-
-          <span
-            class="pointer-events-none absolute right-2 top-1.5 h-2 w-2 rounded-full bg-white"
-            aria-hidden="true"
-          ></span>
+  <header class="sticky top-0 z-50 border-b border-violet-200 bg-purple-50/95 backdrop-blur-xl transition-colors duration-300 dark:border-violet-300 dark:bg-slate-300/95">
+    <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-5 py-4">
+      <a href="#home" @click="menuOpen = false" aria-label="Дом с Алисой — наверх" class="flex items-center gap-3 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-600">
+        <span class="relative inline-flex h-10 w-10 shrink-0 items-center justify-center">
+          <img :src="images.logo" alt="" width="36" height="36" class="h-9 w-9 object-contain">
+          <span class="pointer-events-none absolute left-0.5 right-0.5 top-0.5 h-2.5 -rotate-6 rounded-full border border-sky-100 bg-white shadow-sm" aria-hidden="true"></span>
+          <span class="pointer-events-none absolute left-2 top-2 h-2 w-1.5 rounded-b-full bg-white" aria-hidden="true"></span>
+          <span class="pointer-events-none absolute right-2 top-1.5 h-2 w-2 rounded-full bg-white" aria-hidden="true"></span>
         </span>
-
-        <span class="text-sm font-semibold sm:text-base">
-          Дом с Алисой
-        </span>
+        <span class="text-sm font-semibold sm:text-base">Дом с Алисой</span>
       </a>
 
-      <nav
-        class="hidden items-center gap-7 text-sm text-slate-600 md:flex"
-        aria-label="Основная навигация"
-      >
-        <a
-          href="#features"
-          class="transition hover:text-violet-700"
-        >
-          Возможности
-        </a>
-
-        <a
-          href="#demo"
-          class="transition hover:text-violet-700"
-        >
-          Управление
-        </a>
-
-        <a
-          href="#start"
-          class="transition hover:text-violet-700"
-        >
-          Как начать
-        </a>
+      <nav class="hidden items-center gap-7 text-sm text-slate-600 md:flex" aria-label="Основная навигация">
+        <a href="#features" class="transition hover:text-violet-700">Возможности</a>
+        <a href="#demo" class="transition hover:text-violet-700">Управление</a>
+        <a href="#subscriptions" class="transition hover:text-violet-700">Подписки</a>
+        <a href="#start" class="transition hover:text-violet-700">Как начать</a>
       </nav>
 
       <div class="flex items-center gap-2">
-
-        <!-- Смена темы -->
-        <button
-          type="button"
-          @click="toggleTheme"
-          :aria-pressed="evening"
-          :aria-label="evening
-            ? 'Включить светлую тему'
-            : 'Включить вечернюю тему'"
-          :title="evening ? 'Светлая тема' : 'Вечерняя тема'"
-          class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-violet-200 bg-white text-violet-700 transition hover:bg-violet-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-600 dark:border-violet-300 dark:bg-violet-200 dark:hover:bg-violet-300"
-        >
-          <svg
-            v-if="!evening"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            aria-hidden="true"
-          >
-            <path
-              d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z"
-            />
-          </svg>
-
-          <svg
-            v-else
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            aria-hidden="true"
-          >
-            <circle cx="12" cy="12" r="4"/>
-
-            <path
-              d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"
-            />
-          </svg>
+        <button type="button" @click="toggleTheme" :aria-pressed="evening" :aria-label="evening ? 'Включить светлую тему' : 'Включить вечернюю тему'" :title="evening ? 'Светлая тема' : 'Вечерняя тема'" class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-violet-200 bg-white text-violet-700 transition hover:bg-violet-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-600 dark:border-violet-300 dark:bg-violet-200 dark:hover:bg-violet-300">
+          <svg v-if="!evening" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z" /></svg>
+          <svg v-else width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
         </button>
 
-        <a
-          href="#demo"
-          class="hidden rounded-full border border-violet-200 px-5 py-3 text-xs transition hover:-translate-y-0.5 hover:bg-violet-100 motion-reduce:transform-none sm:inline-flex dark:border-violet-300 dark:hover:bg-violet-200"
-        >
-          Попробовать 
-        </a>
+        <a href="#demo" class="hidden rounded-full border border-violet-200 px-5 py-3 text-xs transition hover:-translate-y-0.5 hover:bg-violet-100 motion-reduce:transform-none sm:inline-flex dark:border-violet-300 dark:hover:bg-violet-200">Попробовать</a>
 
-        <!-- Кнопка мобильного меню -->
-        <button
-          type="button"
-          @click="menuOpen = !menuOpen"
-          :aria-expanded="menuOpen"
-          aria-controls="mobile-menu"
-          :aria-label="menuOpen
-            ? 'Закрыть меню'
-            : 'Открыть меню'"
-          class="grid h-11 w-11 place-items-center rounded-full border border-violet-200 bg-white md:hidden dark:border-violet-300 dark:bg-violet-200"
-        >
-          <svg
-            v-if="!menuOpen"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            aria-hidden="true"
-          >
-            <path d="M4 7h16M4 12h16M4 17h16"/>
-          </svg>
-
-          <svg
-            v-else
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            aria-hidden="true"
-          >
-            <path d="m6 6 12 12M18 6 6 18"/>
-          </svg>
+        <button type="button" @click="menuOpen = !menuOpen" :aria-expanded="menuOpen" aria-controls="mobile-menu" :aria-label="menuOpen ? 'Закрыть меню' : 'Открыть меню'" class="grid h-11 w-11 place-items-center rounded-full border border-violet-200 bg-white md:hidden dark:border-violet-300 dark:bg-violet-200">
+          <svg v-if="!menuOpen" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          <svg v-else width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
         </button>
       </div>
     </div>
 
-    <nav
-      id="mobile-menu"
-      :class="menuOpen ? 'grid' : 'hidden'"
-      class="gap-1 border-t border-violet-200 px-5 py-3 text-sm md:hidden dark:border-violet-300"
-      aria-label="Мобильная навигация"
-      @keydown.esc="menuOpen = false"
-    >
-      <a
-        href="#features"
-        @click="menuOpen = false"
-        class="rounded-lg px-3 py-3 hover:bg-violet-100 dark:hover:bg-violet-200"
-      >
-        Возможности
-      </a>
-
-      <a
-        href="#demo"
-        @click="menuOpen = false"
-        class="rounded-lg px-3 py-3 hover:bg-violet-100 dark:hover:bg-violet-200"
-      >
-        
-      </a>
-
-      <a
-        href="#start"
-        @click="menuOpen = false"
-        class="rounded-lg px-3 py-3 hover:bg-violet-100 dark:hover:bg-violet-200"
-      >
-        Как начать
-      </a>
+    <nav id="mobile-menu" :class="menuOpen ? 'grid' : 'hidden'" class="gap-1 border-t border-violet-200 px-5 py-3 text-sm md:hidden dark:border-violet-300" aria-label="Мобильная навигация" @keydown.esc="menuOpen = false">
+      <a href="#features" @click="menuOpen = false" class="rounded-lg px-3 py-3 hover:bg-violet-100 dark:hover:bg-violet-200">Возможности</a>
+      <a href="#demo" @click="menuOpen = false" class="rounded-lg px-3 py-3 hover:bg-violet-100 dark:hover:bg-violet-200">Управление</a>
+      <a href="#subscriptions" @click="menuOpen = false" class="rounded-lg px-3 py-3 hover:bg-violet-100 dark:hover:bg-violet-200">Подписки</a>
+      <a href="#start" @click="menuOpen = false" class="rounded-lg px-3 py-3 hover:bg-violet-100 dark:hover:bg-violet-200">Как начать</a>
     </nav>
   </header>
 
-  <main
-    id="home"
-    class="mx-auto max-w-6xl scroll-mt-28 px-3 pb-6 pt-5 sm:px-5"
-  >
+  <main id="home" class="mx-auto max-w-6xl scroll-mt-28 px-3 pb-6 pt-5 sm:px-5">
 
-    <!-- Надпись над сеткой -->
-    <div
-      class="mb-4 flex items-center justify-between gap-3 px-1"
-    >
-      <p
-        class="text-[10px] uppercase tracking-[0.15em] text-slate-600 sm:text-xs"
-      >
-        Управление умным домом
-      </p>
-
-      <span
-        class="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white/60 px-3 py-2 text-[10px] text-violet-700 dark:border-violet-300 dark:bg-violet-200/70"
-      >
-        <span aria-hidden="true">❄</span>
-        Зимнее оформление
-      </span>
+    <div class="mb-4 flex items-center justify-between gap-3 px-1">
+      <p class="text-[10px] uppercase tracking-[0.15em] text-slate-600 sm:text-xs">Управление умным домом</p>
     </div>
 
-    <!-- ОСНОВНАЯ СЕТКА -->
-    <div
-      class="overflow-hidden rounded-3xl border border-violet-200 bg-white shadow-xl shadow-violet-900/5 transition-colors duration-300 dark:border-violet-300 dark:bg-slate-200"
-    >
+    <div class="overflow-hidden rounded-3xl border border-violet-200 bg-white shadow-xl shadow-violet-900/5 transition-colors duration-300 dark:border-violet-300 dark:bg-slate-200">
 
-      <!-- ПЕРВЫЙ ЭКРАН -->
-      <section
-        class="grid border-b border-violet-200 md:grid-cols-2 dark:border-violet-300"
-      >
-
-        <div
-          class="flex flex-col items-start justify-center border-b border-violet-200 bg-violet-50 px-6 py-12 transition-colors duration-300 sm:px-10 md:border-b-0 md:border-r md:py-16 dark:border-violet-300 dark:bg-violet-200/50"
-        >
-          <span
-            class="mb-7 inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white/60 px-3 py-2 text-[10px] dark:border-violet-300 dark:bg-violet-100/60"
-          >
-            <img
-              :src="images.logo"
-              alt=""
-              class="h-4 w-4 object-contain"
-            >
-
+      <section class="grid border-b border-violet-200 md:grid-cols-2 dark:border-violet-300">
+        <div class="flex flex-col items-start justify-center border-b border-violet-200 bg-violet-50 px-6 py-12 transition-colors duration-300 sm:px-10 md:border-b-0 md:border-r md:py-16 dark:border-violet-300 dark:bg-violet-200/50">
+          <span class="mb-7 inline-flex items-center gap-2 rounded-full border border-violet-200 bg-white/60 px-3 py-2 text-[10px] dark:border-violet-300 dark:bg-violet-100/60">
+            <img :src="images.logo" alt="" class="h-4 w-4 object-contain">
             Приложение «Дом с Алисой»
           </span>
 
-          <h1
-            class="text-5xl font-medium leading-[1.04] tracking-[-0.055em] sm:text-6xl lg:text-7xl"
-          >
-            Устройства.<br>
-            Сценарии.<br>
-
-            <span class="text-violet-600 dark:text-violet-700">
-              Всё вместе.
-            </span>
+          <h1 class="text-5xl font-medium leading-[1.04] tracking-[-0.055em] sm:text-6xl lg:text-7xl">
+            Устройства.<br>Сценарии.<br>
+            <span class="text-violet-600 dark:text-violet-700">Всё вместе.</span>
           </h1>
 
-          <p
-            class="mt-6 max-w-sm text-sm leading-7 text-slate-600 sm:text-base"
-          >
-            Объединяйте совместимые устройства
-            в приложении «Дом с Алисой».
-            Управляйте освещением, создавайте сценарии
-            и проверяйте состояние техники.
+          <p class="mt-6 max-w-sm text-sm leading-7 text-slate-600 sm:text-base">
+            Объединяйте совместимые устройства в приложении «Дом с Алисой».
+            Управляйте освещением, создавайте сценарии и проверяйте состояние техники.
           </p>
 
           <div class="mt-8 flex flex-wrap gap-3">
-            <a
-              href="#demo"
-              class="rounded-full bg-violet-600 px-5 py-3 text-xs font-medium text-white transition hover:-translate-y-0.5 hover:bg-violet-700 motion-reduce:transform-none"
-            >
-              Попробовать управление
-            </a>
-
-            <a
-              href="#features"
-              class="rounded-full border border-violet-200 px-5 py-3 text-xs transition hover:bg-violet-100 dark:border-violet-300 dark:hover:bg-violet-200"
-            >
-              Возможности 
-            </a>
+            <a href="#demo" class="rounded-full bg-violet-600 px-5 py-3 text-xs font-medium text-white transition hover:-translate-y-0.5 hover:bg-violet-700 motion-reduce:transform-none">Попробовать управление</a>
+            <a href="#features" class="rounded-full border border-violet-200 px-5 py-3 text-xs transition hover:bg-violet-100 dark:border-violet-300 dark:hover:bg-violet-200">Возможности</a>
           </div>
 
-          <p class="mt-7 text-[11px] leading-5 text-slate-600">
-            Начните с одного совместимого устройства.
-          </p>
+          <p class="mt-7 text-[11px] leading-5 text-slate-600">Начните с одного совместимого устройства.</p>
         </div>
 
-        <!-- Большая колонка -->
-        <div
-          class="group relative flex min-h-[450px] items-center justify-center overflow-hidden bg-gradient-to-br from-violet-100 via-purple-100 to-sky-100 md:min-h-[590px] dark:from-violet-300 dark:via-purple-200 dark:to-sky-200"
-        >
-
-          <!-- Гирлянда -->
-          <div
-            class="pointer-events-none absolute inset-x-0 top-0 z-20 h-12 overflow-hidden"
-            aria-hidden="true"
-          >
-            <div
-              class="absolute -left-[5%] -top-10 h-16 w-[110%] rounded-b-[50%] border-b border-violet-500/30"
-            ></div>
-
-            <div
-              class="absolute inset-x-6 top-5 flex justify-between"
-            >
-              <span
-                v-for="n in 11"
-                :key="n"
-                class="h-2.5 w-1.5 rounded-full shadow-sm"
-                :class="n % 2
-                  ? 'bg-violet-300 shadow-violet-400/40'
-                  : 'bg-sky-200 shadow-sky-400/40'"
-              ></span>
+        <div class="group relative flex min-h-[450px] items-center justify-center overflow-hidden bg-gradient-to-br from-violet-100 via-purple-100 to-sky-100 md:min-h-[590px] dark:from-violet-300 dark:via-purple-200 dark:to-sky-200">
+          <div class="pointer-events-none absolute inset-x-0 top-0 z-20 h-12 overflow-hidden" aria-hidden="true">
+            <div class="absolute -left-[5%] -top-10 h-16 w-[110%] rounded-b-[50%] border-b border-violet-500/30"></div>
+            <div class="absolute inset-x-6 top-5 flex justify-between">
+              <span v-for="n in 11" :key="n" class="h-2.5 w-1.5 rounded-full shadow-sm" :class="n % 2 ? 'bg-violet-300 shadow-violet-400/40' : 'bg-sky-200 shadow-sky-400/40'"></span>
             </div>
           </div>
 
-          <!-- Круги -->
-          <div
-            class="pointer-events-none absolute h-72 w-72 rounded-full border border-white/70 sm:h-96 sm:w-96"
-            aria-hidden="true"
-          ></div>
+          <div class="pointer-events-none absolute h-72 w-72 rounded-full border border-white/70 sm:h-96 sm:w-96" aria-hidden="true"></div>
+          <div class="pointer-events-none absolute h-52 w-52 rounded-full border border-white/50" aria-hidden="true"></div>
 
-          <div
-            class="pointer-events-none absolute h-52 w-52 rounded-full border border-white/50"
-            aria-hidden="true"
-          ></div>
-
-          <!-- Снежинки -->
-          <div
-            class="pointer-events-none absolute inset-0 select-none overflow-hidden"
-            aria-hidden="true"
-          >
-            <span class="absolute left-[7%] top-[13%] text-2xl text-white/80">
-              ❄
-            </span>
-
-            <span class="absolute left-[23%] top-[8%] text-xs text-white/70">
-              ❄
-            </span>
-
-            <span class="absolute right-[29%] top-[15%] text-lg text-white/70">
-              ✧
-            </span>
-
-            <span class="absolute right-[7%] top-[30%] text-3xl text-white/75">
-              ❄
-            </span>
-
-            <span class="absolute left-[5%] top-[43%] text-sm text-white/80">
-              ✧
-            </span>
-
-            <span class="absolute left-[14%] bottom-[31%] text-lg text-white/65">
-              ❄
-            </span>
-
-            <span class="absolute right-[12%] bottom-[29%] text-sm text-white/80">
-              ❄
-            </span>
-
-            <span class="absolute right-[5%] bottom-[15%] text-xl text-white/70">
-              ✧
-            </span>
-
-            <span class="absolute left-[35%] bottom-[7%] text-sm text-white/70">
-              ❄
-            </span>
-
-            <span class="absolute right-[32%] bottom-[13%] text-xs text-white/80">
-              ❄
-            </span>
-
-            <span
-              class="absolute left-[40%] top-[5%] h-1 w-1 rounded-full bg-white/80"
-            ></span>
-
-            <span
-              class="absolute right-[5%] top-[55%] h-1.5 w-1.5 rounded-full bg-white/70"
-            ></span>
-
-            <span
-              class="absolute left-[7%] bottom-[12%] h-1 w-1 rounded-full bg-white/80"
-            ></span>
-
-            <span
-              class="absolute right-[22%] top-[8%] h-1 w-1 rounded-full bg-white/70"
-            ></span>
+          <div class="pointer-events-none absolute inset-0 select-none overflow-hidden" aria-hidden="true">
+            <span class="absolute left-[7%] top-[13%] text-2xl text-white/80">❄</span>
+            <span class="absolute left-[23%] top-[8%] text-xs text-white/70">❄</span>
+            <span class="absolute right-[29%] top-[15%] text-lg text-white/70">✧</span>
+            <span class="absolute right-[7%] top-[30%] text-3xl text-white/75">❄</span>
+            <span class="absolute left-[5%] top-[43%] text-sm text-white/80">✧</span>
+            <span class="absolute left-[14%] bottom-[31%] text-lg text-white/65">❄</span>
+            <span class="absolute right-[12%] bottom-[29%] text-sm text-white/80">❄</span>
+            <span class="absolute right-[5%] bottom-[15%] text-xl text-white/70">✧</span>
+            <span class="absolute left-[35%] bottom-[7%] text-sm text-white/70">❄</span>
+            <span class="absolute right-[32%] bottom-[13%] text-xs text-white/80">❄</span>
+            <span class="absolute left-[40%] top-[5%] h-1 w-1 rounded-full bg-white/80"></span>
+            <span class="absolute right-[5%] top-[55%] h-1.5 w-1.5 rounded-full bg-white/70"></span>
+            <span class="absolute left-[7%] bottom-[12%] h-1 w-1 rounded-full bg-white/80"></span>
+            <span class="absolute right-[22%] top-[8%] h-1 w-1 rounded-full bg-white/70"></span>
           </div>
 
-          <!-- Ёлочный шар -->
-          <div
-            class="pointer-events-none absolute right-16 top-0 flex flex-col items-center"
-            aria-hidden="true"
-          >
+          <div class="pointer-events-none absolute right-16 top-0 flex flex-col items-center" aria-hidden="true">
             <div class="h-12 w-px bg-violet-500/30"></div>
-
-            <div
-              class="h-1 w-2 rounded-t bg-violet-400/70"
-            ></div>
-
-            <div
-              class="h-9 w-7 rounded-full border border-white/80 bg-gradient-to-br from-white/80 to-violet-400/30 shadow-inner"
-            ></div>
+            <div class="h-1 w-2 rounded-t bg-violet-400/70"></div>
+            <div class="h-9 w-7 rounded-full border border-white/80 bg-gradient-to-br from-white/80 to-violet-400/30 shadow-inner"></div>
           </div>
 
-          <img
-            :src="images.mainSpeaker"
-            alt="Умная колонка с Алисой"
-            fetchpriority="high"
-            class="relative z-10 h-80 w-4/5 -rotate-12 object-contain drop-shadow-xl transition-transform duration-500 ease-out group-hover:-translate-y-3 group-hover:-rotate-3 group-hover:scale-105 motion-reduce:transform-none sm:h-96"
-          >
+          <img :src="images.mainSpeaker" alt="Умная колонка с Алисой" fetchpriority="high" class="relative z-10 h-80 w-4/5 -rotate-12 object-contain drop-shadow-xl transition-transform duration-500 ease-out group-hover:-translate-y-3 group-hover:-rotate-3 group-hover:scale-105 motion-reduce:transform-none sm:h-96">
 
-          <div
-            class="absolute bottom-24 left-5 z-20 rounded-2xl rounded-bl-sm border border-white/80 bg-white/95 px-4 py-3 text-sm shadow-sm transition-transform duration-500 group-hover:-translate-y-1 sm:left-8 dark:bg-violet-100/95"
-          >
+          <div class="absolute bottom-24 left-5 z-20 rounded-2xl rounded-bl-sm border border-white/80 bg-white/95 px-4 py-3 text-sm shadow-sm transition-transform duration-500 group-hover:-translate-y-1 sm:left-8 dark:bg-violet-100/95">
             Алиса, включи свет.
           </div>
 
-          <div
-            class="absolute bottom-8 right-5 z-20 flex items-center gap-2 rounded-2xl rounded-br-sm border border-white/80 bg-white/95 px-4 py-3 text-sm shadow-sm sm:right-8 dark:bg-violet-100/95"
-          >
-            <img
-              :src="images.logo"
-              alt=""
-              class="h-5 w-5 object-contain"
-            >
-
+          <div class="absolute bottom-8 right-5 z-20 flex items-center gap-2 rounded-2xl rounded-br-sm border border-white/80 bg-white/95 px-4 py-3 text-sm shadow-sm sm:right-8 dark:bg-violet-100/95">
+            <img :src="images.logo" alt="" class="h-5 w-5 object-contain">
             Свет включён.
           </div>
         </div>
       </section>
 
-      <!-- КОРОТКАЯ СТРОКА -->
-      <div
-        class="grid grid-cols-3 divide-x divide-violet-200 border-b border-violet-200 text-center text-[10px] sm:text-sm dark:divide-violet-300 dark:border-violet-300"
-      >
-        <div
-          class="bg-violet-100 px-2 py-5 transition-colors dark:bg-violet-300/60"
-        >
-          Устройства
-        </div>
-
-        <div
-          class="bg-sky-100 px-2 py-5 transition-colors dark:bg-sky-200"
-        >
-          Сценарии
-        </div>
-
-        <div
-          class="bg-purple-100 px-2 py-5 transition-colors dark:bg-purple-300/60"
-        >
-          Расписания
-        </div>
+      <div class="grid grid-cols-3 divide-x divide-violet-200 border-b border-violet-200 text-center text-[10px] sm:text-sm dark:divide-violet-300 dark:border-violet-300">
+        <div class="bg-violet-100 px-2 py-5 transition-colors dark:bg-violet-300/60">Устройства</div>
+        <div class="bg-sky-100 px-2 py-5 transition-colors dark:bg-sky-200">Сценарии</div>
+        <div class="bg-purple-100 px-2 py-5 transition-colors dark:bg-purple-300/60">Расписания</div>
       </div>
 
-      <!-- ВОЗМОЖНОСТИ -->
-      <section id="features" class="scroll-mt-28">
-
-        <div
-          class="flex flex-col justify-between gap-4 border-b border-violet-200 px-6 py-10 sm:px-10 md:flex-row md:items-end dark:border-violet-300"
-        >
+      <section class="border-b border-violet-200 bg-white/40 px-6 py-8 sm:px-10 dark:border-violet-300 dark:bg-slate-200/40">
+        <div class="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
           <div>
-            <p
-              class="mb-3 text-[10px] uppercase tracking-[0.17em] text-violet-700"
-            >
-              Возможности приложения
-            </p>
-
-            <h2
-              class="text-3xl font-medium leading-tight tracking-tight sm:text-4xl"
-            >
-              Управляйте устройствами.<br>
-              Автоматизируйте привычное.
-            </h2>
+            <p class="mb-2 text-[10px] uppercase tracking-[0.17em] text-violet-700">Технологии подключения</p>
+            <h2 class="text-xl font-medium tracking-tight sm:text-2xl">Протоколы умного дома</h2>
           </div>
-
-          <p class="max-w-xs text-sm leading-6 text-slate-600">
-            Настраивайте освещение, объединяйте
-            действия в сценарии и задавайте расписание
-            для совместимых устройств.
-          </p>
+          <p class="max-w-xs text-xs leading-5 text-slate-600">Устройства подключаются напрямую или через Хаб Яндекса и совместимые Станции.</p>
         </div>
 
-        <div
-          class="grid divide-y divide-violet-200 border-b border-violet-200 md:grid-cols-3 md:divide-x md:divide-y-0 dark:divide-violet-300 dark:border-violet-300"
-        >
-          <article
-            v-for="(feature, index) in features"
-            :key="feature.title"
-            class="group relative min-h-64 overflow-hidden p-6 transition-colors sm:p-8"
-            :class="index === 1
-              ? 'bg-sky-100 dark:bg-sky-200'
-              : 'bg-violet-100 dark:bg-violet-300/60'"
-          >
-            <!-- Значок со снегом -->
-            <span
-              class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/70 bg-white/50 text-xs text-violet-700 transition-transform group-hover:-rotate-6"
-            >
-              0{{ index + 1 }}
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <article class="group relative -rotate-1 overflow-hidden rounded-xl border border-violet-200 bg-violet-50 p-4 shadow-[0_0_18px_-6px_rgba(139,92,246,0.45)] transition-all duration-300 hover:rotate-0 hover:shadow-[0_0_24px_-4px_rgba(139,92,246,0.55)] dark:border-violet-300 dark:bg-violet-200/40">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/70 bg-white/60 text-[10px] font-medium text-violet-700">Wi</span>
+            <h3 class="mt-3 text-sm font-semibold not-italic">Wi-Fi</h3>
+            <p class="mt-1.5 border-l-2 border-violet-300/60 pl-2.5 text-[11px] italic leading-5 text-slate-600 dark:border-violet-400/50">Беспроводной протокол для подключения камер, лампочек, чайников и пылесосов. Работает через роутер и требует стабильной сети, но не нуждается в отдельном хабе.</p>
+            <span class="pointer-events-none absolute -bottom-6 -right-6 h-12 w-12 rounded-full border border-white/50" aria-hidden="true"></span>
+          </article>
 
-              <span
-                class="pointer-events-none absolute -left-0.5 -right-0.5 -top-1 h-2.5 -rotate-3 rounded-full border border-sky-100 bg-white shadow-sm"
-                aria-hidden="true"
-              ></span>
+          <article class="group relative -rotate-1 overflow-hidden rounded-xl border border-sky-200 bg-sky-50 p-4 shadow-[0_0_18px_-6px_rgba(56,189,248,0.45)] transition-all duration-300 hover:rotate-0 hover:shadow-[0_0_24px_-4px_rgba(56,189,248,0.55)] dark:border-violet-300 dark:bg-sky-200/40">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/70 bg-white/60 text-[10px] font-medium text-violet-700">Zb</span>
+            <h3 class="mt-3 text-sm font-semibold not-italic">Zigbee</h3>
+            <p class="mt-1.5 border-l-2 border-sky-300/60 pl-2.5 text-[11px] italic leading-5 text-slate-600 dark:border-sky-400/50">Беспроводной энергоэффективный протокол связи, созданный для объединения устройств «умного дома» и интернета вещей (IoT) в единую сеть. Работает поверх стандарта IEEE 802.15.4 и рассчитан на передачу небольших порций данных с минимальным расходом энергии.</p>
+            <span class="pointer-events-none absolute right-3 top-3 text-sm text-white/80" aria-hidden="true">❄</span>
+          </article>
 
-              <span
-                class="pointer-events-none absolute left-1.5 top-0.5 h-2 w-1.5 rounded-b-full bg-white"
-                aria-hidden="true"
-              ></span>
-            </span>
+          <article class="group relative -rotate-1 overflow-hidden rounded-xl border border-purple-200 bg-purple-50 p-4 shadow-[0_0_18px_-6px_rgba(168,85,247,0.45)] transition-all duration-300 hover:rotate-0 hover:shadow-[0_0_24px_-4px_rgba(168,85,247,0.55)] dark:border-violet-300 dark:bg-purple-200/40">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/70 bg-white/60 text-[10px] font-medium text-violet-700">Mt</span>
+            <h3 class="mt-3 text-sm font-semibold not-italic">Matter over Wi-Fi</h3>
+            <p class="mt-1.5 border-l-2 border-purple-300/60 pl-2.5 text-[11px] italic leading-5 text-slate-600 dark:border-purple-400/50">Универсальный протокол, который позволяет устройствам разных производителей работать в одной экосистеме. Подходит для лампочек, розеток, выключателей и реле и упрощает подключение без привязки к одному бренду.</p>
+            <span class="pointer-events-none absolute -bottom-5 -right-5 h-10 w-10 rounded-full border border-white/50" aria-hidden="true"></span>
+          </article>
 
-            <h3 class="mt-7 text-xl font-medium">
-              {{ feature.title }}
-            </h3>
-
-            <p class="mt-3 max-w-xs text-sm leading-6 text-slate-600">
-              {{ feature.text }}
-            </p>
-
-            <div
-              class="pointer-events-none absolute -bottom-16 -right-16 h-32 w-32 rounded-full border border-white/70"
-              aria-hidden="true"
-            ></div>
-
-            <span
-              class="pointer-events-none absolute right-5 top-5 text-lg text-white/70"
-              aria-hidden="true"
-            >
-              ❄
-            </span>
+          <article class="group relative -rotate-1 overflow-hidden rounded-xl border border-violet-200 bg-violet-50 p-4 shadow-[0_0_18px_-6px_rgba(139,92,246,0.45)] transition-all duration-300 hover:rotate-0 hover:shadow-[0_0_24px_-4px_rgba(139,92,246,0.55)] dark:border-violet-300 dark:bg-violet-200/40">
+            <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-white/70 bg-white/60 text-[10px] font-medium text-violet-700">ИК</span>
+            <h3 class="mt-3 text-sm font-semibold not-italic">ИК-порт</h3>
+            <p class="mt-1.5 border-l-2 border-violet-300/60 pl-2.5 text-[11px] italic leading-5 text-slate-600 dark:border-violet-400/50">Инфракрасный порт для управления техникой со встроенным приёмником — кондиционерами, телевизорами и другой бытовой электроникой. Работает через умный пульт или Хаб Яндекса и не требует замены самой техники.</p>
+            <span class="pointer-events-none absolute right-3 bottom-3 text-xs text-white/80" aria-hidden="true">✧</span>
           </article>
         </div>
       </section>
 
-      <!-- КАРТОЧКИ С ИЗОБРАЖЕНИЯМИ -->
-      <section
-        class="grid divide-y divide-violet-200 border-b border-violet-200 md:grid-cols-2 md:divide-x md:divide-y-0 dark:divide-violet-300 dark:border-violet-300"
-      >
-        <article
-          class="group relative flex min-h-80 items-center overflow-hidden bg-gradient-to-br from-sky-50 to-sky-100 px-6 py-8 sm:px-10 dark:from-sky-200 dark:to-blue-200"
-        >
-          <div class="relative z-10 w-3/5">
-            <span
-              class="rounded-full border border-white/70 bg-white/50 px-3 py-2 text-[10px]"
-            >
-              01 / Сценарии
-            </span>
-
-            <h3 class="mt-6 text-2xl font-medium leading-tight">
-              Несколько действий.<br>
-              Одна команда.
-            </h3>
-
-            <p class="mt-3 text-sm leading-6 text-slate-600">
-              Приглушить свет, закрыть совместимые
-              умные шторы и подготовить комнату к просмотру фильма.
-            </p>
+      <section class="border-b border-violet-200 px-6 py-8 sm:px-10 dark:border-violet-300">
+        <div class="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+          <div>
+            <p class="mb-2 text-[10px] uppercase tracking-[0.17em] text-violet-700">Совместимость</p>
+            <h2 class="text-xl font-medium tracking-tight sm:text-2xl">Устройства от <span class="text-violet-600 dark:text-violet-700">170+</span> производителей</h2>
           </div>
+          <a href="https://alice.yandex.ru/smart-home" target="_blank" rel="noopener noreferrer" class="shrink-0 text-xs text-violet-700 underline underline-offset-4 hover:text-violet-900">Полный каталог на официальном сайте ↗</a>
+        </div>
 
-          <img
-            :src="images.mainSpeaker"
-            alt="Колонка с Алисой"
-            loading="lazy"
-            class="absolute -right-5 bottom-4 h-56 w-[45%] rotate-12 object-contain drop-shadow-lg transition-transform duration-500 group-hover:-translate-y-2 group-hover:rotate-3 motion-reduce:transform-none sm:right-0"
-          >
+        <div class="mt-5 flex flex-wrap gap-2">
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Aqara</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Digma</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Elari</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Hiper</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">LG</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Legrand</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Philips</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Polaris</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Redmond</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Roborock</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Rubetek</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Samsung</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Tuya</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Xiaomi</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">Yeelight</span>
+          <span class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[11px] text-slate-700 dark:border-violet-300 dark:bg-violet-200/40">eWeLink</span>
+          <span class="rounded-full border border-dashed border-violet-300 bg-violet-50 px-3 py-1.5 text-[11px] text-violet-700 dark:border-violet-400 dark:bg-violet-200/40">и другие</span>
+        </div>
 
-          <span
-            class="pointer-events-none absolute right-8 top-6 text-2xl text-white"
-            aria-hidden="true"
-          >
-            ❄
-          </span>
+        <p class="mt-4 text-[11px] leading-5 text-slate-500">Список неполный. Актуальный перечень совместимых устройств и производителей — в каталоге умного дома Яндекса.</p>
+      </section>
 
-          <span
-            class="pointer-events-none absolute bottom-4 left-7 text-sm text-white/80"
-            aria-hidden="true"
-          >
-            ✧
-          </span>
+      <div class="flex flex-wrap items-center justify-center gap-6 border-b border-violet-200 bg-white/40 px-6 py-6 dark:border-violet-300 dark:bg-slate-200/40">
+        <span class="text-[10px] uppercase tracking-[0.15em] text-slate-500">Совместимые устройства</span>
+
+        <img :src="images.stationYandex" alt="Яндекс Станция" loading="lazy" class="h-12 w-auto object-contain opacity-90 transition hover:-translate-y-0.5 hover:opacity-100">
+        <img :src="images.stationPng1" alt="Колонка с Алисой" loading="lazy" class="h-12 w-auto object-contain opacity-90 transition hover:-translate-y-0.5 hover:opacity-100">
+        <img :src="images.stationPng2" alt="Колонка с Алисой" loading="lazy" class="h-12 w-auto object-contain opacity-90 transition hover:-translate-y-0.5 hover:opacity-100">
+        <img :src="images.stationPng3" alt="Колонка с Алисой" loading="lazy" class="h-12 w-auto object-contain opacity-90 transition hover:-translate-y-0.5 hover:opacity-100">
+      </div>
+
+      <section id="features" class="scroll-mt-28">
+        <div class="flex flex-col justify-between gap-4 border-b border-violet-200 px-6 py-10 sm:px-10 md:flex-row md:items-end dark:border-violet-300">
+          <div>
+            <p class="mb-3 text-[10px] uppercase tracking-[0.17em] text-violet-700">Возможности приложения</p>
+            <h2 class="text-3xl font-medium leading-tight tracking-tight sm:text-4xl">Управляйте устройствами.<br>Автоматизируйте привычное.</h2>
+          </div>
+          <p class="max-w-xs text-sm leading-6 text-slate-600">Настраивайте освещение, объединяйте действия в сценарии и задавайте расписание для совместимых устройств.</p>
+        </div>
+
+        <div class="grid divide-y divide-violet-200 border-b border-violet-200 md:grid-cols-3 md:divide-x md:divide-y-0 dark:divide-violet-300 dark:border-violet-300">
+          <article v-for="(feature, index) in features" :key="feature.title" class="group relative min-h-64 overflow-hidden p-6 transition-colors sm:p-8" :class="index === 1 ? 'bg-sky-100 dark:bg-sky-200' : 'bg-violet-100 dark:bg-violet-300/60'">
+            <span class="relative inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/70 bg-white/50 text-xs text-violet-700 transition-transform group-hover:-rotate-6">
+              0{{ index + 1 }}
+              <span class="pointer-events-none absolute -left-0.5 -right-0.5 -top-1 h-2.5 -rotate-3 rounded-full border border-sky-100 bg-white shadow-sm" aria-hidden="true"></span>
+              <span class="pointer-events-none absolute left-1.5 top-0.5 h-2 w-1.5 rounded-b-full bg-white" aria-hidden="true"></span>
+            </span>
+            <h3 class="mt-7 text-xl font-medium">{{ feature.title }}</h3>
+            <p class="mt-3 max-w-xs text-sm leading-6 text-slate-600">{{ feature.text }}</p>
+            <div class="pointer-events-none absolute -bottom-16 -right-16 h-32 w-32 rounded-full border border-white/70" aria-hidden="true"></div>
+            <span class="pointer-events-none absolute right-5 top-5 text-lg text-white/70" aria-hidden="true">❄</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="grid divide-y divide-violet-200 border-b border-violet-200 md:grid-cols-2 md:divide-x md:divide-y-0 dark:divide-violet-300 dark:border-violet-300">
+        <article class="group relative flex min-h-80 items-center overflow-hidden bg-gradient-to-br from-sky-50 to-sky-100 px-6 py-8 sm:px-10 dark:from-sky-200 dark:to-blue-200">
+          <div class="relative z-10 w-3/5">
+            <span class="rounded-full border border-white/70 bg-white/50 px-3 py-2 text-[10px]">01 / Сценарии</span>
+            <h3 class="mt-6 text-2xl font-medium leading-tight">Несколько действий.<br>Одна команда.</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600">Приглушить свет, закрыть совместимые умные шторы и подготовить комнату к просмотру фильма.</p>
+          </div>
+          <img :src="images.mainSpeaker" alt="Колонка с Алисой" loading="lazy" class="absolute -right-5 bottom-4 h-56 w-[45%] rotate-12 object-contain drop-shadow-lg transition-transform duration-500 group-hover:-translate-y-2 group-hover:rotate-3 motion-reduce:transform-none sm:right-0">
+          <span class="pointer-events-none absolute right-8 top-6 text-2xl text-white" aria-hidden="true">❄</span>
+          <span class="pointer-events-none absolute bottom-4 left-7 text-sm text-white/80" aria-hidden="true">✧</span>
         </article>
 
-        <article
-          class="group relative flex min-h-80 items-center overflow-hidden bg-gradient-to-br from-violet-50 to-violet-100 px-6 py-8 sm:px-10 dark:from-violet-200 dark:to-violet-300"
-        >
+        <article class="group relative flex min-h-80 items-center overflow-hidden bg-gradient-to-br from-violet-50 to-violet-100 px-6 py-8 sm:px-10 dark:from-violet-200 dark:to-violet-300">
           <div class="relative z-10 w-3/5">
-            <span
-              class="rounded-full border border-white/70 bg-white/50 px-3 py-2 text-[10px]"
-            >
-              02 / Управление
-            </span>
-
-            <h3 class="mt-6 text-2xl font-medium leading-tight">
-              Разные устройства.<br>
-              Одно приложение.
-            </h3>
-
-            <a
-              href="#demo"
-              class="mt-5 inline-block text-sm text-violet-700 underline underline-offset-4"
-            >
-              Посмотреть пример 
-            </a>
+            <span class="rounded-full border border-white/70 bg-white/50 px-3 py-2 text-[10px]">02 / Управление</span>
+            <h3 class="mt-6 text-2xl font-medium leading-tight">Разные устройства.<br>Одно приложение.</h3>
+            <a href="#demo" class="mt-5 inline-block text-sm text-violet-700 underline underline-offset-4">Посмотреть пример</a>
           </div>
-
-          <img
-            :src="images.secondSpeaker"
-            alt="Изображение продукта с Алисой"
-            loading="lazy"
-            class="absolute -right-7 bottom-3 h-60 w-1/2 -rotate-12 object-contain drop-shadow-lg transition-transform duration-500 group-hover:-translate-y-2 group-hover:-rotate-3 motion-reduce:transform-none"
-          >
-
-          <span
-            class="pointer-events-none absolute right-8 top-6 text-lg text-white/80"
-            aria-hidden="true"
-          >
-            ❄
-          </span>
+          <img :src="images.secondSpeaker" alt="Робот с Алисой" loading="lazy" class="absolute -right-7 bottom-3 h-60 w-1/2 -rotate-12 object-contain drop-shadow-lg transition-transform duration-500 group-hover:-translate-y-2 group-hover:-rotate-3 motion-reduce:transform-none">
+          <span class="pointer-events-none absolute right-8 top-6 text-lg text-white/80" aria-hidden="true">❄</span>
         </article>
       </section>
 
+      <section class="border-b border-violet-200 bg-gradient-to-br from-violet-50 via-purple-50 to-sky-50 px-6 py-10 sm:px-10 dark:border-violet-300 dark:from-violet-200 dark:via-purple-200 dark:to-sky-200">
+        <div class="group relative mx-auto flex max-w-4xl flex-col items-center gap-8 overflow-hidden rounded-3xl border border-white/70 bg-white/60 p-6 shadow-lg shadow-violet-900/5 backdrop-blur-sm transition-colors sm:p-10 md:flex-row dark:border-violet-300 dark:bg-violet-100/60">
+          <div class="relative z-10 w-full md:w-1/2">
+            <span class="inline-block rounded-full border border-white/70 bg-white/70 px-3 py-2 text-[10px] uppercase tracking-[0.15em] text-violet-700 dark:border-violet-300 dark:bg-violet-200/70">03 / Приложение</span>
+            <h3 class="mt-5 text-2xl font-medium leading-tight sm:text-3xl">Весь дом<br>в одном приложении.</h3>
+            <p class="mt-4 max-w-sm text-sm leading-7 text-slate-600">Управляйте устройствами, создавайте сценарии и проверяйте состояние техники — всё в приложении «Дом с Алисой».</p>
+            <a href="https://alice.yandex.ru/smart-home" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex rounded-full border border-violet-300 bg-white/40 px-5 py-3 text-xs transition hover:-translate-y-0.5 hover:bg-white/70 motion-reduce:transform-none">Открыть приложение ↗</a>
+          </div>
+          <div class="relative w-full md:w-1/2">
+            <div class="pointer-events-none absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-violet-200/60 to-sky-200/60 blur-2xl" aria-hidden="true"></div>
+            <img src="https://www.ixbt.com/img/n1/news/2022/2/5/yandexapp_large.jpg" alt="Приложение «Дом с Алисой» на смартфоне" loading="lazy" class="relative z-10 mx-auto w-full max-w-sm rounded-2xl border border-white/80 object-cover shadow-xl transition-transform duration-500 group-hover:-translate-y-2 group-hover:scale-[1.02] motion-reduce:transform-none">
+          </div>
+          <span class="pointer-events-none absolute right-6 top-6 text-2xl text-violet-300/80" aria-hidden="true">❄</span>
+          <span class="pointer-events-none absolute bottom-6 left-8 text-sm text-sky-300/80" aria-hidden="true">✧</span>
+        </div>
+      </section>
 
-<!-- НОВАЯ КАРТОЧКА С ИЗОБРАЖЕНИЕМ -->
-<section
-  class="border-b border-violet-200 bg-gradient-to-br from-violet-50 via-purple-50 to-sky-50 px-6 py-10 sm:px-10 dark:border-violet-300 dark:from-violet-200 dark:via-purple-200 dark:to-sky-200"
->
-  <div
-    class="group relative mx-auto flex max-w-4xl flex-col items-center gap-8 overflow-hidden rounded-3xl border border-white/70 bg-white/60 p-6 shadow-lg shadow-violet-900/5 backdrop-blur-sm transition-colors sm:p-10 md:flex-row dark:border-violet-300 dark:bg-violet-100/60"
-  >
-    <!-- Текстовая часть -->
-    <div class="relative z-10 w-full md:w-1/2">
-      <span
-        class="inline-block rounded-full border border-white/70 bg-white/70 px-3 py-2 text-[10px] uppercase tracking-[0.15em] text-violet-700 dark:border-violet-300 dark:bg-violet-200/70"
-      >
-        03 / Приложение
-      </span>
+      <div class="border-b border-violet-200 bg-gradient-to-r from-violet-50 via-sky-50 to-purple-50 px-6 py-8 sm:px-10 dark:border-violet-300 dark:from-violet-200 dark:via-sky-200 dark:to-purple-200">
+        <p class="mb-6 text-[10px] uppercase tracking-[0.17em] text-violet-700">Устройства с Алисой</p>
 
-      <h3 class="mt-5 text-2xl font-medium leading-tight sm:text-3xl">
-        Весь дом<br>
-        в одном приложении.
-      </h3>
-
-      <p class="mt-4 max-w-sm text-sm leading-7 text-slate-600">
-        Управляйте устройствами, создавайте сценарии
-        и проверяйте состояние техники — всё в приложении
-        «Дом с Алисой».
-      </p>
-
-      <a
-        href="https://alice.yandex.ru/smart-home"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="mt-6 inline-flex rounded-full border border-violet-300 bg-white/40 px-5 py-3 text-xs transition hover:-translate-y-0.5 hover:bg-white/70 motion-reduce:transform-none"
-      >
-        Открыть приложение 
-      </a>
-    </div>
-
-    <!-- Изображение -->
-    <div class="relative w-full md:w-1/2">
-      <div
-        class="pointer-events-none absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-violet-200/60 to-sky-200/60 blur-2xl"
-        aria-hidden="true"
-      ></div>
-
-      <img
-        src="https://www.ixbt.com/img/n1/news/2022/2/5/yandexapp_large.jpg"
-        alt="Приложение «Дом с Алисой» на смартфоне"
-        loading="lazy"
-        class="relative z-10 mx-auto w-full max-w-sm rounded-2xl border border-white/80 object-cover shadow-xl transition-transform duration-500 group-hover:-translate-y-2 group-hover:scale-[1.02] motion-reduce:transform-none"
-      >
-    </div>
-
-    <!-- Декор: снежинки -->
-    <span
-      class="pointer-events-none absolute right-6 top-6 text-2xl text-violet-300/80"
-      aria-hidden="true"
-    >❄</span>
-    <span
-      class="pointer-events-none absolute bottom-6 left-8 text-sm text-sky-300/80"
-      aria-hidden="true"
-    >✧</span>
-  </div>
-</section>
-
-      <!-- ДЕМОНСТРАЦИОННЫЙ ПУЛЬТ -->
-      <section
-        id="demo"
-        class="grid scroll-mt-28 divide-y divide-violet-200 border-b border-violet-200 md:grid-cols-2 md:divide-x md:divide-y-0 dark:divide-violet-300 dark:border-violet-300"
-      >
-        <div
-          class="flex flex-col justify-between overflow-hidden bg-sky-100 p-6 transition-colors sm:p-10 dark:bg-sky-200"
-        >
-          <div>
-            <span
-              class="inline-block rounded-full border border-white/70 bg-white/50 px-3 py-2 text-[10px]"
-            >
-              Интерактивная демонстрация
-            </span>
-
-            <h2
-              class="mt-6 text-3xl font-medium leading-tight tracking-tight sm:text-4xl"
-            >
-              Включите свет.<br>
-              Настройте яркость.
-            </h2>
-
-            <p class="mt-5 max-w-sm text-sm leading-7 text-slate-600">
-              Используйте переключатель, передвиньте
-              ползунок или выберите готовый сценарий.
-              Результат сразу отобразится в макете комнаты.
-            </p>
+        <div class="flex flex-wrap items-end justify-center gap-6 sm:gap-10">
+          <div class="group text-center">
+            <img :src="images.mainSpeaker" alt="Станция с Алисой" loading="lazy" class="mx-auto h-28 w-28 object-contain transition-transform duration-500 group-hover:-translate-y-2 group-hover:scale-110">
+            <p class="mt-3 text-[11px] text-slate-600">Станция</p>
           </div>
 
-          <div
-            class="group relative mt-8 flex h-64 items-center justify-center"
-          >
-            <div
-              class="absolute h-48 w-48 rounded-full bg-white/30"
-              aria-hidden="true"
-            ></div>
+          <div class="group text-center">
+            <img :src="images.stationYandex" alt="Яндекс Станция" loading="lazy" class="mx-auto h-24 w-24 rounded-2xl bg-white/40 object-contain transition-transform duration-500 group-hover:-translate-y-2 group-hover:scale-110">
+            <p class="mt-3 text-[11px] text-slate-600">Станция Мини 3 Про</p>
+          </div>
 
-            <img
-              :src="images.secondSpeaker"
-              alt="Продукт с Алисой рядом с демонстрационным пультом"
-              loading="lazy"
-              class="relative h-full w-full max-w-80 rotate-6 object-contain drop-shadow-xl transition-transform duration-500 group-hover:-translate-y-2 group-hover:rotate-0 motion-reduce:transform-none"
-            >
+          <div class="group text-center">
+            <img :src="images.stationPng1" alt="Колонка с Алисой" loading="lazy" class="mx-auto h-28 w-28 rounded-2xl bg-white/40 object-contain transition-transform duration-500 group-hover:-translate-y-2 group-hover:scale-110">
+            <p class="mt-3 text-[11px] text-slate-600">Станция Дуо Макс</p>
+          </div>
 
-            <!-- Логотип со снегом -->
+          <div class="group text-center">
+            <img :src="images.stationPng2" alt="Колонка с Алисой" loading="lazy" class="mx-auto h-24 w-24 rounded-2xl bg-white/40 object-contain transition-transform duration-500 group-hover:-translate-y-2 group-hover:scale-110">
+            <p class="mt-3 text-[11px] text-slate-600">Станция Лайт 2</p>
+          </div>
+
+          <div class="group text-center">
+            <img :src="images.stationPng3" alt="Колонка с Алисой" loading="lazy" class="mx-auto h-24 w-24 rounded-2xl bg-white/40 object-contain transition-transform duration-500 group-hover:-translate-y-2 group-hover:scale-110">
+            <p class="mt-3 text-[11px] text-slate-600">Станция Стрит</p>
+          </div>
+
+          <div class="group relative text-center">
+            <img :src="images.logo" alt="Алиса" loading="lazy" class="mx-auto h-16 w-16 object-contain transition-transform duration-500 group-hover:rotate-12">
+            <p class="mt-3 text-[11px] text-slate-600">Алиса</p>
+            <span class="pointer-events-none absolute -right-2 -top-2 text-lg text-white/80" aria-hidden="true">❄</span>
+          </div>
+        </div>
+      </div>
+
+      <section id="demo" class="grid scroll-mt-28 divide-y divide-violet-200 border-b border-violet-200 md:grid-cols-2 md:divide-x md:divide-y-0 dark:divide-violet-300 dark:border-violet-300">
+        <div class="flex flex-col justify-between overflow-hidden bg-sky-100 p-6 transition-colors sm:p-10 dark:bg-sky-200">
+          <div>
+            <h2 class="mt-6 text-3xl font-medium leading-tight tracking-tight sm:text-4xl">Включите свет.<br>Настройте яркость.</h2>
+            <p class="mt-5 max-w-sm text-sm leading-7 text-slate-600">Используйте переключатель, передвиньте ползунок или выберите готовый сценарий. Результат сразу отобразится в макете комнаты.</p>
+          </div>
+
+          <div class="group relative mt-8 flex h-64 items-center justify-center">
+            <div class="absolute h-48 w-48 rounded-full bg-white/30" aria-hidden="true"></div>
+            <img :src="images.stationPng3" alt="Колонка с Алисой" loading="lazy" class="relative h-full w-full max-w-80 rotate-6 object-contain drop-shadow-xl transition-transform duration-500 group-hover:-translate-y-2 group-hover:rotate-0 motion-reduce:transform-none">
             <span class="absolute bottom-3 left-2">
-              <img
-                :src="images.logo"
-                alt=""
-                loading="lazy"
-                class="h-14 w-14 rounded-2xl border border-white/80 bg-white/80 p-3 shadow-sm dark:bg-violet-100"
-              >
-
-              <span
-                class="pointer-events-none absolute -left-0.5 -right-0.5 -top-1 h-3 -rotate-6 rounded-full border border-sky-100 bg-white shadow-sm"
-                aria-hidden="true"
-              ></span>
-
-              <span
-                class="pointer-events-none absolute left-2 top-1 h-2 w-2 rounded-b-full bg-white"
-                aria-hidden="true"
-              ></span>
+              <img :src="images.logo" alt="" loading="lazy" class="h-14 w-14 rounded-2xl border border-white/80 bg-white/80 p-3 shadow-sm dark:bg-violet-100">
+              <span class="pointer-events-none absolute -left-0.5 -right-0.5 -top-1 h-3 -rotate-6 rounded-full border border-sky-100 bg-white shadow-sm" aria-hidden="true"></span>
+              <span class="pointer-events-none absolute left-2 top-1 h-2 w-2 rounded-b-full bg-white" aria-hidden="true"></span>
             </span>
-
-            <div
-              class="pointer-events-none absolute inset-0 select-none"
-              aria-hidden="true"
-            >
-              <span class="absolute left-3 top-5 text-xl text-white/80">
-                ❄
-              </span>
-
-              <span class="absolute right-4 top-3 text-3xl text-white/80">
-                ❄
-              </span>
-
-              <span class="absolute right-10 bottom-8 text-lg text-white/70">
-                ✧
-              </span>
-
-              <span class="absolute left-[28%] top-0 text-xs text-white/80">
-                ❄
-              </span>
-
-              <span class="absolute right-[28%] bottom-2 text-sm text-white/70">
-                ❄
-              </span>
+            <div class="pointer-events-none absolute inset-0 select-none" aria-hidden="true">
+              <span class="absolute left-3 top-5 text-xl text-white/80">❄</span>
+              <span class="absolute right-4 top-3 text-3xl text-white/80">❄</span>
+              <span class="absolute right-10 bottom-8 text-lg text-white/70">✧</span>
+              <span class="absolute left-[28%] top-0 text-xs text-white/80">❄</span>
+              <span class="absolute right-[28%] bottom-2 text-sm text-white/70">❄</span>
             </div>
           </div>
-
-          <p class="mt-6 text-[11px] leading-5 text-slate-600">
-            Демо работает только на странице.
-            Команды не отправляются на реальные устройства.
-          </p>
         </div>
 
-        <!-- Сам пульт -->
-        <div
-          class="flex items-center justify-center bg-white p-5 transition-colors sm:p-10 dark:bg-slate-200"
-        >
-          <div
-            class="w-full max-w-sm rounded-[30px] border border-violet-200 bg-violet-50 p-5 shadow-xl shadow-violet-900/5 transition-colors dark:border-violet-300 dark:bg-violet-200/60"
-          >
-            <div
-              class="mx-auto mb-5 h-1 w-10 rounded-full bg-violet-200 dark:bg-violet-400/50"
-              aria-hidden="true"
-            ></div>
+        <div class="flex items-center justify-center bg-white p-5 transition-colors sm:p-10 dark:bg-slate-200">
+          <div class="w-full max-w-sm rounded-[30px] border border-violet-200 bg-violet-50 p-5 shadow-xl shadow-violet-900/5 transition-colors dark:border-violet-300 dark:bg-violet-200/60">
+            <div class="mx-auto mb-5 h-1 w-10 rounded-full bg-violet-200 dark:bg-violet-400/50" aria-hidden="true"></div>
 
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-xs text-slate-600">
-                  Мой дом
-                </p>
-
-                <h3 class="mt-1 text-xl font-medium">
-                  Гостиная
-                </h3>
+                <p class="text-xs text-slate-600">Мой дом</p>
+                <h3 class="mt-1 text-xl font-medium">Гостиная</h3>
               </div>
-
-              <span
-                class="rounded-full border border-violet-200 bg-white/60 px-3 py-1.5 text-[10px] text-violet-700 dark:border-violet-300"
-              >
-                Демо
-              </span>
             </div>
 
-            <!-- Визуализация освещения -->
-            <div
-              class="relative mt-5 flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-violet-100 transition-colors dark:bg-violet-300/50"
-            >
-              <div
-                class="absolute inset-0 bg-gradient-to-br from-amber-200 to-orange-50 transition-opacity duration-300"
-                :class="lightLevel"
-                aria-hidden="true"
-              ></div>
-
-              <div
-                class="absolute bottom-0 left-5 right-5 h-8 rounded-t-2xl bg-violet-900/10"
-                aria-hidden="true"
-              ></div>
-
+            <div class="relative mt-5 flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-violet-100 transition-colors dark:bg-violet-300/50">
+              <div class="absolute inset-0 bg-gradient-to-br from-amber-200 to-orange-50 transition-opacity duration-300" :class="lightLevel" aria-hidden="true"></div>
+              <div class="absolute bottom-0 left-5 right-5 h-8 rounded-t-2xl bg-violet-900/10" aria-hidden="true"></div>
               <div class="relative text-center">
-                <svg
-                  width="27"
-                  height="27"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  class="mx-auto transition-colors"
-                  :class="lightOn
-                    ? 'text-amber-700'
-                    : 'text-slate-500'"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M9 18h6M10 21h4M8.5 14.5a6 6 0 1 1 7 0c-.9.7-1.5 1.5-1.5 2.5h-4c0-1-.6-1.8-1.5-2.5Z"
-                  />
-                </svg>
-
-                <p class="mt-2 text-xs text-slate-700">
-                  {{
-                    lightOn
-                      ? `Освещение включено · ${brightness}%`
-                      : 'Освещение выключено'
-                  }}
-                </p>
+                <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mx-auto transition-colors" :class="lightOn ? 'text-amber-700' : 'text-slate-500'" aria-hidden="true"><path d="M9 18h6M10 21h4M8.5 14.5a6 6 0 1 1 7 0c-.9.7-1.5 1.5-1.5 2.5h-4c0-1-.6-1.8-1.5-2.5Z" /></svg>
+                <p class="mt-2 text-xs text-slate-700">{{ lightOn ? `Освещение включено · ${brightness}%` : 'Освещение выключено' }}</p>
               </div>
             </div>
 
-            <!-- Переключатель -->
-            <div
-              class="mt-4 rounded-2xl border border-violet-200 bg-white p-5 transition-colors dark:border-violet-300 dark:bg-violet-100"
-            >
+            <div class="mt-4 rounded-2xl border border-violet-200 bg-white p-5 transition-colors dark:border-violet-300 dark:bg-violet-100">
               <div class="flex items-center justify-between gap-4">
                 <div>
-                  <p class="text-sm font-medium">
-                    Основной свет
-                  </p>
-
-                  <p class="mt-1 text-xs text-slate-600">
-                    {{ lightOn ? 'Включён' : 'Выключен' }}
-                  </p>
+                  <p class="text-sm font-medium">Основной свет</p>
+                  <p class="mt-1 text-xs text-slate-600">{{ lightOn ? 'Включён' : 'Выключен' }}</p>
                 </div>
-
-                <button
-                  type="button"
-                  role="switch"
-                  :aria-checked="lightOn"
-                  aria-label="Основной свет"
-                  @click="toggleLight"
-                  class="relative h-7 w-12 shrink-0 rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-600"
-                  :class="lightOn
-                    ? 'bg-violet-600'
-                    : 'bg-slate-400'"
-                >
-                  <span
-                    class="absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-transform"
-                    :class="lightOn
-                      ? 'translate-x-5'
-                      : 'translate-x-0'"
-                  ></span>
+                <button type="button" role="switch" :aria-checked="lightOn" aria-label="Основной свет" @click="toggleLight" class="relative h-7 w-12 shrink-0 rounded-full transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-violet-600" :class="lightOn ? 'bg-violet-600' : 'bg-slate-400'">
+                  <span class="absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-transform" :class="lightOn ? 'translate-x-5' : 'translate-x-0'"></span>
                 </button>
               </div>
 
-              <label
-                for="brightness"
-                class="mt-6 flex justify-between text-xs text-slate-600"
-              >
-                <span>Яркость</span>
-                <span>{{ brightness }}%</span>
-              </label>
-
-              <input
-                id="brightness"
-                v-model.number="brightness"
-                @input="changeBrightness"
-                type="range"
-                min="1"
-                max="100"
-                class="mt-3 w-full cursor-pointer accent-violet-600"
-              >
+              <label for="brightness" class="mt-6 flex justify-between text-xs text-slate-600"><span>Яркость</span><span>{{ brightness }}%</span></label>
+              <input id="brightness" v-model.number="brightness" @input="changeBrightness" type="range" min="1" max="100" class="mt-3 w-full cursor-pointer accent-violet-600">
             </div>
 
-            <!-- Сценарии -->
-            <p class="mb-3 mt-5 text-xs text-slate-600">
-              Готовые сценарии
-            </p>
+            <p class="mb-3 mt-5 text-xs text-slate-600">Готовые сценарии</p>
 
             <div class="grid grid-cols-3 gap-2">
-              <button
-                v-for="scene in scenes"
-                :key="scene.id"
-                type="button"
-                :aria-pressed="activeScene === scene.id"
-                @click="applyScene(scene)"
-                class="rounded-xl border px-1 py-4 text-[11px] transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
-                :class="activeScene === scene.id
-                  ? 'border-violet-500 bg-violet-200 text-violet-900 dark:bg-violet-300'
-                  : 'border-violet-200 bg-white text-slate-600 hover:border-violet-400 dark:border-violet-300 dark:bg-violet-100'"
-              >
-                {{ scene.name }}
-              </button>
+              <button v-for="scene in scenes" :key="scene.id" type="button" :aria-pressed="activeScene === scene.id" @click="applyScene(scene)" class="rounded-xl border px-1 py-4 text-[11px] transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600" :class="activeScene === scene.id ? 'border-violet-500 bg-violet-200 text-violet-900 dark:bg-violet-300' : 'border-violet-200 bg-white text-slate-600 hover:border-violet-400 dark:border-violet-300 dark:bg-violet-100'">{{ scene.name }}</button>
             </div>
 
-            <p
-              class="mt-4 min-h-10 text-[11px] leading-5 text-slate-600"
-              role="status"
-              aria-live="polite"
-              aria-atomic="true"
-            >
-              {{ statusMessage }}
-            </p>
-
+            <p class="mt-4 min-h-10 text-[11px] leading-5 text-slate-600" role="status" aria-live="polite" aria-atomic="true">{{ statusMessage }}</p>
           </div>
         </div>
       </section>
 
-      <!-- РЕКЛАМНЫЙ КОМПОНЕНТ -->
-      <section
-        class="border-b border-violet-200 px-6 py-7 sm:px-10 dark:border-violet-300"
-        aria-label="Рекламный блок"
-      >
-        <ad-slot
-          size="banner"
-          label="Рекламное место"
-        ></ad-slot>
+      <section class="border-b border-violet-200 px-6 py-7 sm:px-10 dark:border-violet-300" aria-label="Рекламный блок">
+        <ad-slot size="banner" label="Рекламное место"></ad-slot>
       </section>
 
-      <!-- КАК НАЧАТЬ -->
-      <section
-        id="start"
-        class="grid scroll-mt-28 divide-y divide-violet-200 border-b border-violet-200 md:grid-cols-2 md:divide-x md:divide-y-0 dark:divide-violet-300 dark:border-violet-300"
-      >
-        <div
-          class="relative overflow-hidden bg-violet-100 p-6 transition-colors sm:p-10 dark:bg-violet-300/60"
-        >
-          <span
-            class="rounded-full border border-white/70 bg-white/50 px-3 py-2 text-[10px]"
-          >
-            Начало работы
-          </span>
+      <section id="subscriptions" class="scroll-mt-28 border-b border-violet-200 p-6 sm:p-10 dark:border-violet-300">
+        <div class="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+          <div>
+            <p class="mb-3 text-[10px] uppercase tracking-[0.17em] text-violet-700">Подписки и сервисы</p>
+            <h2 class="text-2xl font-medium tracking-tight sm:text-3xl">Больше возможностей<br>с Яндекс Плюсом.</h2>
+          </div>
+          <p class="max-w-xs text-sm leading-6 text-slate-600">Подписка привязывается к аккаунту и открывает доступ к музыке, кино и другим сервисам на всех ваших устройствах.</p>
+        </div>
 
-          <h2
-            class="mt-6 text-3xl font-medium leading-tight tracking-tight"
-          >
-            Подключите устройство.<br>
-            Создайте первый сценарий.
-          </h2>
+        <div class="grid gap-4 sm:grid-cols-3">
+          <article class="group relative overflow-hidden rounded-2xl border border-violet-200 bg-violet-50 p-6 transition-colors dark:border-violet-300 dark:bg-violet-200/50">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/70 bg-white/60 text-[10px] text-violet-700">01</span>
+            <h3 class="mt-5 text-base font-medium">Плюс</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">Музыка без рекламы, Кинопоиск, Книги и кешбэк баллами. Для одного пользователя.</p>
+            <p class="mt-4 text-xs font-medium text-violet-700">11,99 BYN / мес</p>
+            <span class="pointer-events-none absolute -bottom-8 -right-8 h-20 w-20 rounded-full border border-white/60" aria-hidden="true"></span>
+          </article>
 
-          <p class="mt-5 max-w-sm text-sm leading-7 text-slate-600">
-            Выберите действие, которое хочется
-            упростить: включение света, вечернее
-            освещение или выключение техники перед сном.
-          </p>
+          <article class="group relative overflow-hidden rounded-2xl border-2 border-violet-400 bg-gradient-to-br from-violet-100 to-sky-100 p-6 shadow-lg shadow-violet-900/10 dark:border-violet-500 dark:from-violet-300/60 dark:to-sky-200">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/70 bg-white/70 text-[10px] text-violet-700">02</span>
+            <h3 class="mt-5 text-base font-medium">Плюс Мульти</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">Всё из Плюса для вас и ещё трёх близких. Отдельные рекомендации и плейлисты у каждого.</p>
+            <p class="mt-4 text-xs font-medium text-violet-700">15 BYN / мес · до 4 человек</p>
+            <span class="pointer-events-none absolute right-4 top-4 text-lg text-white/80" aria-hidden="true">❄</span>
+          </article>
 
-          <a
-            href="https://alice.yandex.ru/smart-home"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="mt-6 inline-flex rounded-full border border-violet-300 bg-white/30 px-5 py-3 text-xs transition hover:bg-white/60"
-          >
-            Подробнее об умном доме ↗
-          </a>
+          <article class="group relative overflow-hidden rounded-2xl border border-violet-200 bg-sky-50 p-6 transition-colors dark:border-violet-300 dark:bg-sky-200/50">
+            <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/70 bg-white/60 text-[10px] text-violet-700">03</span>
+            <h3 class="mt-5 text-base font-medium">Плюс с Амедиатекой</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">Расширенная библиотека фильмов и сериалов, включая премьеры и эксклюзивы.</p>
+            <p class="mt-4 text-xs font-medium text-violet-700">Уточняйте на сайте</p>
+            <span class="pointer-events-none absolute bottom-3 right-5 text-sm text-white/80" aria-hidden="true">✧</span>
+          </article>
+        </div>
 
+        <div class="mt-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+          <p class="max-w-xl text-[11px] leading-5 text-slate-600">Цены указаны в белорусских рублях (BYN) по данным официальной страницы Яндекса. Актуальные тарифы и условия пробного периода смотрите на сайте Яндекс Плюса.</p>
+          <a href="https://plus.yandex.ru" target="_blank" rel="noopener noreferrer" class="shrink-0 text-xs text-violet-700 underline underline-offset-4 hover:text-violet-900">Тарифы Яндекс Плюса ↗</a>
+        </div>
+      </section>
+
+      <section id="start" class="grid scroll-mt-28 divide-y divide-violet-200 border-b border-violet-200 md:grid-cols-2 md:divide-x md:divide-y-0 dark:divide-violet-300 dark:border-violet-300">
+        <div class="relative overflow-hidden bg-violet-100 p-6 transition-colors sm:p-10 dark:bg-violet-300/60">
+          <span class="rounded-full border border-white/70 bg-white/50 px-3 py-2 text-[10px]">Начало работы</span>
+          <h2 class="mt-6 text-3xl font-medium leading-tight tracking-tight">Подключите устройство.<br>Создайте первый сценарий.</h2>
+          <p class="mt-5 max-w-sm text-sm leading-7 text-slate-600">Выберите действие, которое хочется упростить: включение света, вечернее освещение или выключение техники перед сном.</p>
+          <a href="https://alice.yandex.ru/smart-home" target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex rounded-full border border-violet-300 bg-white/30 px-5 py-3 text-xs transition hover:bg-white/60">Подробнее об умном доме ↗</a>
           <div class="mt-8 flex items-center gap-3">
-            <img
-              :src="images.logo"
-              alt=""
-              loading="lazy"
-              class="h-9 w-9 object-contain"
-            >
-
-            <span class="text-xs text-slate-600">
-              Настройка в приложении «Дом с Алисой»
-            </span>
+            <img :src="images.logo" alt="" loading="lazy" class="h-9 w-9 object-contain">
+            <span class="text-xs text-slate-600">Настройка в приложении «Дом с Алисой»</span>
           </div>
-
-          <span
-            class="pointer-events-none absolute right-5 top-8 text-2xl text-white"
-            aria-hidden="true"
-          >
-            ❄
-          </span>
-
-          <span
-            class="pointer-events-none absolute bottom-5 right-12 text-sm text-white/70"
-            aria-hidden="true"
-          >
-            ✧
-          </span>
+          <span class="pointer-events-none absolute right-5 top-8 text-2xl text-white" aria-hidden="true">❄</span>
+          <span class="pointer-events-none absolute bottom-5 right-12 text-sm text-white/70" aria-hidden="true">✧</span>
         </div>
 
-        <div
-          class="divide-y divide-violet-200 bg-violet-50/50 transition-colors dark:divide-violet-300 dark:bg-slate-200"
-        >
-          <article
-            v-for="(step, index) in steps"
-            :key="step.title"
-            class="flex gap-5 p-6 sm:p-8"
-          >
-            <span
-              class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-violet-200 bg-white/60 text-xs text-violet-700 dark:border-violet-300 dark:bg-violet-200"
-            >
-              0{{ index + 1 }}
-            </span>
-
+        <div class="divide-y divide-violet-200 bg-violet-50/50 transition-colors dark:divide-violet-300 dark:bg-slate-200">
+          <article v-for="(step, index) in steps" :key="step.title" class="flex gap-5 p-6 sm:p-8">
+            <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-violet-200 bg-white/60 text-xs text-violet-700 dark:border-violet-300 dark:bg-violet-200">0{{ index + 1 }}</span>
             <div>
-              <h3 class="text-base font-medium">
-                {{ step.title }}
-              </h3>
-
-              <p class="mt-2 text-sm leading-6 text-slate-600">
-                {{ step.text }}
-              </p>
+              <h3 class="text-base font-medium">{{ step.title }}</h3>
+              <p class="mt-2 text-sm leading-6 text-slate-600">{{ step.text }}</p>
             </div>
           </article>
         </div>
       </section>
 
-      <!-- ВОПРОСЫ -->
-      <section
-        class="border-b border-violet-200 p-6 sm:p-10 dark:border-violet-300"
-      >
+      <section class="border-b border-violet-200 p-6 sm:p-10 dark:border-violet-300">
         <div class="mb-7 flex items-center justify-between gap-4">
-          <h2
-            class="text-2xl font-medium tracking-tight sm:text-3xl"
-          >
-            Вопросы о подключении
-          </h2>
-
-          <span
-            class="text-2xl text-violet-600"
-            aria-hidden="true"
-          >
-            ✧
-          </span>
+          <h2 class="text-2xl font-medium tracking-tight sm:text-3xl">Вопросы о подключении</h2>
+          <span class="text-2xl text-violet-600" aria-hidden="true">✧</span>
         </div>
 
-        <details
-          v-for="item in faq"
-          :key="item.question"
-          class="group border-t border-violet-200 py-5 dark:border-violet-300"
-        >
-          <summary
-            class="flex cursor-pointer list-none items-center justify-between gap-5 text-sm [&::-webkit-details-marker]:hidden"
-          >
+        <details v-for="item in faq" :key="item.question" class="group border-t border-violet-200 py-5 dark:border-violet-300">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-5 text-sm [&::-webkit-details-marker]:hidden">
             {{ item.question }}
-
-            <span
-              class="text-xl text-violet-600 transition-transform group-open:rotate-45"
-              aria-hidden="true"
-            >
-              +
-            </span>
+            <span class="text-xl text-violet-600 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
           </summary>
-
-          <p
-            class="mt-4 max-w-2xl pr-6 text-sm leading-7 text-slate-600"
-          >
-            {{ item.answer }}
-          </p>
+          <p class="mt-4 max-w-2xl pr-6 text-sm leading-7 text-slate-600">{{ item.answer }}</p>
         </details>
       </section>
 
-
-<!-- ПОДПИСКИ -->
-<section
-  id="subscriptions"
-  class="scroll-mt-28 border-b border-violet-200 p-6 sm:p-10 dark:border-violet-300"
->
-  <div class="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
-    <div>
-      <p class="mb-3 text-[10px] uppercase tracking-[0.17em] text-violet-700">
-        Подписки и сервисы
-      </p>
-
-      <h2 class="text-2xl font-medium tracking-tight sm:text-3xl">
-        Больше возможностей<br>
-        с Яндекс Плюсом.
-      </h2>
-    </div>
-
-    <p class="max-w-xs text-sm leading-6 text-slate-600">
-      Подписка привязывается к аккаунту и открывает
-      доступ к музыке, кино и другим сервисам
-      на всех ваших устройствах.
-    </p>
-  </div>
-
-  <div class="grid gap-4 sm:grid-cols-3">
-    <!-- Карточка 1 -->
-    <article
-      class="group relative overflow-hidden rounded-2xl border border-violet-200 bg-violet-50 p-6 transition-colors dark:border-violet-300 dark:bg-violet-200/50"
-    >
-      <span
-        class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/70 bg-white/60 text-[10px] text-violet-700"
-      >
-        01
-      </span>
-
-      <h3 class="mt-5 text-base font-medium">
-        Плюс
-      </h3>
-
-      <p class="mt-2 text-sm leading-6 text-slate-600">
-        Музыка без рекламы, Кинопоиск, Книги
-        и кешбэк баллами. Для одного пользователя.
-      </p>
-
-      <p class="mt-4 text-xs font-medium text-violet-700">
-        от 11 руб / мес
-      </p>
-
-      <span
-        class="pointer-events-none absolute -bottom-8 -right-8 h-20 w-20 rounded-full border border-white/60"
-        aria-hidden="true"
-      ></span>
-    </article>
-
-    <!-- Карточка 2 (акцентная) -->
-    <article
-      class="group relative overflow-hidden rounded-2xl border-2 border-violet-400 bg-gradient-to-br from-violet-100 to-sky-100 p-6 shadow-lg shadow-violet-900/10 dark:border-violet-500 dark:from-violet-300/60 dark:to-sky-200"
-    >
-      <span
-        class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/70 bg-white/70 text-[10px] text-violet-700"
-      >
-        02
-      </span>
-
-      <h3 class="mt-5 text-base font-medium">
-        Плюс Мульти
-      </h3>
-
-      <p class="mt-2 text-sm leading-6 text-slate-600">
-        Всё из Плюса для вас и ещё трёх близких.
-        Отдельные рекомендации и плейлисты у каждого.
-      </p>
-
-      <p class="mt-4 text-xs font-medium text-violet-700">
-        до 4 человек · 10 устройств
-      </p>
-
-      <span
-        class="pointer-events-none absolute right-4 top-4 text-lg text-white/80"
-        aria-hidden="true"
-      >❄</span>
-    </article>
-
-    <!-- Карточка 3 -->
-    <article
-      class="group relative overflow-hidden rounded-2xl border border-violet-200 bg-sky-50 p-6 transition-colors dark:border-violet-300 dark:bg-sky-200/50"
-    >
-      <span
-        class="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/70 bg-white/60 text-[10px] text-violet-700"
-      >
-        03
-      </span>
-
-      <h3 class="mt-5 text-base font-medium">
-        Плюс с Амедиатекой
-      </h3>
-
-      <p class="mt-2 text-sm leading-6 text-slate-600">
-        Расширенная библиотека фильмов и сериалов,
-        включая премьеры и эксклюзивы.
-      </p>
-
-      <p class="mt-4 text-xs font-medium text-violet-700">
-        от 15 руб / мес
-      </p>
-
-      <span
-        class="pointer-events-none absolute bottom-3 right-5 text-sm text-white/80"
-        aria-hidden="true"
-      >✧</span>
-    </article>
-  </div>
-
-  <!-- Примечание и ссылка -->
-  <div class="mt-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-    <p class="max-w-xl text-[11px] leading-5 text-slate-600">
-      Стоимость указана ориентировочно и может меняться.
-      Актуальные тарифы и условия пробного периода
-      смотрите на официальной странице Яндекс Плюса.
-    </p>
-
-    <a
-      href="https://plus.yandex.ru"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="shrink-0 text-xs text-violet-700 underline underline-offset-4 hover:text-violet-900"
-    >
-      Тарифы Яндекс Плюса 
-    </a>
-  </div>
-</section>
-
-      <!-- ФИНАЛЬНЫЙ БЛОК -->
-      <section
-        class="relative flex flex-col items-start justify-between gap-6 overflow-hidden bg-gradient-to-r from-sky-100 to-violet-100 px-6 py-10 sm:px-10 md:flex-row md:items-center dark:from-sky-200 dark:to-violet-300"
-      >
+      <section class="relative flex flex-col items-start justify-between gap-6 overflow-hidden bg-gradient-to-r from-sky-100 to-violet-100 px-6 py-10 sm:px-10 md:flex-row md:items-center dark:from-sky-200 dark:to-violet-300">
         <div class="relative z-10">
-          <p class="text-xs text-violet-700">
-            Освещение, расписания и сценарии
-          </p>
-
-          <h2
-            class="mt-3 text-3xl font-medium tracking-tight"
-          >
-            Начните с одного устройства.
-          </h2>
+          <p class="text-xs text-violet-700">Освещение, расписания и сценарии</p>
+          <h2 class="mt-3 text-3xl font-medium tracking-tight">Начните с одного устройства.</h2>
         </div>
-
-        <a
-          href="https://alice.yandex.ru/smart-home"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="relative z-10 shrink-0 rounded-full bg-violet-600 px-6 py-3 text-sm text-white transition hover:bg-violet-700"
-        >
-          На официальный сайт ↗
-        </a>
-
-        <span
-          class="pointer-events-none absolute right-1/3 top-3 text-5xl text-white/60"
-          aria-hidden="true"
-        >
-          ❄
-        </span>
-
-        <span
-          class="pointer-events-none absolute bottom-4 left-1/2 text-lg text-white/80"
-          aria-hidden="true"
-        >
-          ❄
-        </span>
+        <a href="https://alice.yandex.ru/smart-home" target="_blank" rel="noopener noreferrer" class="relative z-10 shrink-0 rounded-full bg-violet-600 px-6 py-3 text-sm text-white transition hover:bg-violet-700">На официальный сайт ↗</a>
+        <span class="pointer-events-none absolute right-1/3 top-3 text-5xl text-white/60" aria-hidden="true">❄</span>
+        <span class="pointer-events-none absolute bottom-4 left-1/2 text-lg text-white/80" aria-hidden="true">❄</span>
       </section>
 
     </div>
 
-    <!-- ПОДВАЛ -->
-    <footer
-      class="flex flex-col justify-between gap-5 px-2 pb-4 pt-8 sm:flex-row"
-    >
+    <footer class="flex flex-col justify-between gap-5 px-2 pb-4 pt-8 sm:flex-row">
       <div>
         <a href="#home" class="flex items-center gap-2">
-          <img
-            :src="images.logo"
-            alt=""
-            loading="lazy"
-            class="h-6 w-6 object-contain"
-          >
-
-          <span class="text-sm font-medium">
-            Дом с Алисой
-          </span>
+          <img :src="images.logo" alt="" loading="lazy" class="h-6 w-6 object-contain">
+          <span class="text-sm font-medium">Дом с Алисой</span>
         </a>
-
-        <p
-          class="mt-3 max-w-lg text-[11px] leading-5 text-slate-600"
-        >
-          учебный проект, Минск, {{ year }}.
-          Названия и изображения принадлежат
-          их правообладателям.
-        </p>
-
-        <a
-          href="https://alice.yandex.ru/smart-home"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="mt-3 inline-block text-[11px] text-slate-600 underline underline-offset-4 hover:text-violet-700"
-        >
-          Официальная страница умного дома Яндекса
-        </a>
+        <p class="mt-3 max-w-lg text-[11px] leading-5 text-slate-600">Учебный проект, Минск, {{ year }}. Названия и изображения принадлежат их правообладателям.</p>
+        <a href="https://alice.yandex.ru/smart-home" target="_blank" rel="noopener noreferrer" class="mt-3 inline-block text-[11px] text-slate-600 underline underline-offset-4 hover:text-violet-700">Официальная страница умного дома Яндекса</a>
       </div>
-
-      <a
-        href="#home"
-        class="self-start text-xs text-slate-600 hover:text-violet-700"
-      >
-        Наверх 
-      </a>
+      <a href="#home" class="self-start text-xs text-slate-600 hover:text-violet-700">Наверх</a>
     </footer>
 
   </main>
 </div>
 
 <noscript>
-  <p class="p-6 text-sm">
-    Для отображения страницы и работы демонстрационного
-    пульта включите JavaScript.
-  </p>
+  <p class="p-6 text-sm">Для отображения страницы и работы пульта включите JavaScript.</p>
 </noscript>
 
 <script>
   const { createApp, ref, computed } = Vue;
 
-  // Рекламный компонент. Размеры задаются классами Tailwind.
   const AdSlot = {
     props: {
-      size: {
-        type: String,
-        default: 'banner',
-        validator: value =>
-          ['banner', 'sidebar'].includes(value)
-      },
-
-      label: {
-        type: String,
-        default: 'Рекламное место'
-      }
+      size: { type: String, default: 'banner', validator: v => ['banner', 'sidebar'].includes(v) },
+      label: { type: String, default: 'Рекламное место' }
     },
-
     template: `
       <aside
         :aria-label="label"
-        class="mx-auto flex max-w-full flex-col
-               items-center justify-center gap-2
-               rounded-2xl border-2 border-dashed
-               border-violet-300 bg-violet-50
-               px-4 py-5 text-center transition-colors
-               dark:border-violet-400
-               dark:bg-violet-200/50"
-        :class="size === 'sidebar'
-          ? 'min-h-64 w-72'
-          : 'min-h-28 w-full'"
+        class="mx-auto flex max-w-full flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-violet-300 bg-violet-50 px-4 py-5 text-center transition-colors dark:border-violet-400 dark:bg-violet-200/50"
+        :class="size === 'sidebar' ? 'min-h-64 w-72' : 'min-h-28 w-full'"
       >
-        <span
-          class="text-[10px] uppercase
-                 tracking-[0.18em] text-violet-700"
-        >
-          {{ label }}
-        </span>
-
-        <span class="text-[11px] text-slate-600">
-          Демонстрационный блок · без рекламной сети
-        </span>
+        <span class="text-[10px] uppercase tracking-[0.18em] text-violet-700">{{ label }}</span>
       </aside>
     `
   };
 
   createApp({
-    components: {
-      AdSlot
-    },
+    components: { AdSlot },
 
     setup() {
       const menuOpen = ref(false);
-
-      const evening = ref(
-        document.documentElement.classList.contains('dark')
-      );
+      const evening = ref(document.documentElement.classList.contains('dark'));
 
       function updateThemeColor() {
-        const meta = document.querySelector(
-          'meta[name="theme-color"]'
-        );
-
-        if (meta) {
-          meta.setAttribute(
-            'content',
-            evening.value ? '#cbd5e1' : '#faf5ff'
-          );
-        }
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', evening.value ? '#cbd5e1' : '#faf5ff');
       }
 
       function toggleTheme() {
         evening.value = !evening.value;
-
-        document.documentElement.classList.toggle(
-          'dark',
-          evening.value
-        );
-
+        document.documentElement.classList.toggle('dark', evening.value);
         updateThemeColor();
-
-        try {
-          localStorage.setItem(
-            'alice-theme',
-            evening.value ? 'evening' : 'day'
-          );
-        } catch {}
+        try { localStorage.setItem('alice-theme', evening.value ? 'evening' : 'day'); } catch {}
       }
 
       updateThemeColor();
 
       const images = {
-        logo:
-          'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Alisa_Yandex.svg/250px-Alisa_Yandex.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail',
-
-        mainSpeaker:
-          'https://object.pscloud.io/cms/cms/Uploads/lilac_02_1_1VftPv.png',
-
-        secondSpeaker:
-          'https://avatars.mds.yandex.net/get-lpc/10704932/00096812-6b52-4d3d-864b-9a5601aa47ab/orig'
+        logo: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/Alisa_Yandex.svg/250px-Alisa_Yandex.svg.png?utm_source=commons.wikimedia.org&utm_campaign=parser&utm_content=thumbnail',
+        mainSpeaker: 'https://object.pscloud.io/cms/cms/Uploads/lilac_02_1_1VftPv.png',
+        secondSpeaker: 'https://avatars.mds.yandex.net/get-lpc/10704932/00096812-6b52-4d3d-864b-9a5601aa47ab/orig',
+        stationYandex: 'https://avatars.mds.yandex.net/get-lpc/9736426/4c8b2f49-880a-4cc7-8150-726db0a7094b/orig?width=264&height=268',
+        stationPng1: 'https://png.klev.club/uploads/posts/2024-04/thumbs/png-klev-club-ij1n-p-kolonka-alisa-png-12.png',
+        stationPng2: 'https://png.klev.club/uploads/posts/2024-04/thumbs/png-klev-club-ip0p-p-kolonka-alisa-png-19.png',
+        stationPng3: 'https://png.klev.club/uploads/posts/2024-04/thumbs/png-klev-club-ixzo-p-kolonka-alisa-png-27.png'
       };
 
       const features = [
-        {
-          title: 'Управление освещением',
-          text:
-            'Включайте свет и настраивайте яркость совместимых ламп. Создавайте отдельные сценарии для работы, отдыха и просмотра фильмов.'
-        },
-
-        {
-          title: 'Действия по расписанию',
-          text:
-            'Задавайте время для повседневных действий совместимой техники: например, запуска уборки или включения увлажнителя.'
-        },
-
-        {
-          title: 'Состояние устройств',
-          text:
-            'Проверяйте подключённые устройства и настраивайте доступные уведомления. Возможности зависят от конкретных камер, датчиков и техники.'
-        }
+        { title: 'Управление освещением', text: 'Включайте свет и настраивайте яркость совместимых ламп. Создавайте отдельные сценарии для работы, отдыха и просмотра фильмов.' },
+        { title: 'Действия по расписанию', text: 'Задавайте время для повседневных действий совместимой техники: например, запуска уборки или включения увлажнителя.' },
+        { title: 'Состояние устройств', text: 'Проверяйте подключённые устройства и настраивайте доступные уведомления. Возможности зависят от конкретных камер, датчиков и техники.' }
       ];
 
       const steps = [
-        {
-          title: 'Добавьте устройство',
-          text:
-            'Откройте приложение «Дом с Алисой» и подключите совместимую технику. Следуйте инструкции для вашей модели и протокола связи.'
-        },
-
-        {
-          title: 'Выберите действия',
-          text:
-            'Создайте сценарий из нужных команд. Например, включение света и закрытие совместимых умных штор.'
-        },
-
-        {
-          title: 'Настройте запуск',
-          text:
-            'Выберите подходящий способ запуска сценария и, если нужно, задайте расписание.'
-        }
+        { title: 'Добавьте устройство', text: 'Откройте приложение «Дом с Алисой» и подключите совместимую технику. Следуйте инструкции для вашей модели и протокола связи.' },
+        { title: 'Выберите действия', text: 'Создайте сценарий из нужных команд. Например, включение света и закрытие совместимых умных штор.' },
+        { title: 'Настройте запуск', text: 'Выберите подходящий способ запуска сценария и, если нужно, задайте расписание.' }
       ];
 
       const faq = [
-        {
-          question:
-            'Можно объединить устройства разных брендов?',
-          answer:
-            'Да, если они совместимы с умным домом Яндекса. Способ подключения зависит от производителя, модели и протокола связи. Перед покупкой проверьте совместимость конкретного устройства.'
-        },
-
-        {
-          question:
-            'Что можно делать в приложении?',
-          answer:
-            'Управлять подключёнными устройствами, создавать сценарии, настраивать расписания и проверять состояние техники. Доступные возможности зависят от ваших устройств.'
-        },
-
-        {
-          question:
-            'Обязательно управлять домом голосом?',
-          answer:
-            'Нет. Используйте приложение для управления устройствами и настройки автоматизации. Для голосового управления можно использовать совместимую Яндекс Станцию.'
-        },
-
-        {
-          question:
-            'Этот сайт подключается к моим устройствам?',
-          answer:
-            'Нет. Это неофициальный учебный лендинг. Пульт показывает принцип взаимодействия: все изменения происходят только на странице, вход в аккаунт не требуется.'
-        }
+        { question: 'Можно объединить устройства разных брендов?', answer: 'Да, если они совместимы с умным домом Яндекса. Способ подключения зависит от производителя, модели и протокола связи. Перед покупкой проверьте совместимость конкретного устройства.' },
+        { question: 'Что можно делать в приложении?', answer: 'Управлять подключёнными устройствами, создавать сценарии, настраивать расписания и проверять состояние техники. Доступные возможности зависят от ваших устройств.' },
+        { question: 'Обязательно управлять домом голосом?', answer: 'Нет. Используйте приложение для управления устройствами и настройки автоматизации. Для голосового управления можно использовать совместимую Яндекс Станцию.' },
+        { question: 'Этот сайт подключается к моим устройствам?', answer: 'Нет. Это неофициальный учебный лендинг. Пульт показывает принцип взаимодействия: все изменения происходят только на странице, вход в аккаунт не требуется.' }
       ];
 
       const lightOn = ref(true);
       const brightness = ref(70);
       const activeScene = ref('home');
-
-      const statusMessage = ref(
-        'Сценарий «Я дома»: свет включён, яркость 70%.'
-      );
+      const statusMessage = ref('Сценарий «Я дома»: свет включён, яркость 70%.');
 
       const scenes = [
-        {
-          id: 'home',
-          name: 'Я дома',
-          brightness: 70,
-          lightOn: true
-        },
-
-        {
-          id: 'movie',
-          name: 'Кино',
-          brightness: 20,
-          lightOn: true
-        },
-
-        {
-          id: 'night',
-          name: 'Спать',
-          brightness: 1,
-          lightOn: false
-        }
+        { id: 'home', name: 'Я дома', brightness: 70, lightOn: true },
+        { id: 'movie', name: 'Кино', brightness: 20, lightOn: true },
+        { id: 'night', name: 'Спать', brightness: 1, lightOn: false }
       ];
 
-      // Визуальная яркость меняется готовыми классами Tailwind.
       const lightLevel = computed(() => {
         if (!lightOn.value) return 'opacity-0';
         if (brightness.value <= 10) return 'opacity-10';
@@ -1576,56 +608,29 @@
         if (brightness.value <= 70) return 'opacity-70';
         if (brightness.value <= 80) return 'opacity-80';
         if (brightness.value <= 90) return 'opacity-90';
-
         return 'opacity-100';
       });
 
       function toggleLight() {
         lightOn.value = !lightOn.value;
         activeScene.value = '';
-
-        statusMessage.value = lightOn.value
-          ? `Свет включён. Яркость ${brightness.value}%.`
-          : 'Свет выключен.';
+        statusMessage.value = lightOn.value ? `Свет включён. Яркость ${brightness.value}%.` : 'Свет выключен.';
       }
 
       function changeBrightness() {
         lightOn.value = true;
         activeScene.value = '';
-
-        statusMessage.value =
-          `Яркость изменена: ${brightness.value}%.`;
+        statusMessage.value = `Яркость изменена: ${brightness.value}%.`;
       }
 
       function applyScene(scene) {
         activeScene.value = scene.id;
         brightness.value = scene.brightness;
         lightOn.value = scene.lightOn;
-
-        statusMessage.value = scene.lightOn
-          ? `Сценарий «${scene.name}»: свет включён, яркость ${scene.brightness}%.`
-          : 'Сценарий «Спать»: свет выключен.';
+        statusMessage.value = scene.lightOn ? `Сценарий «${scene.name}»: свет включён, яркость ${scene.brightness}%.` : 'Сценарий «Спать»: свет выключен.';
       }
 
-      return {
-        year: new Date().getFullYear(),
-        menuOpen,
-        evening,
-        toggleTheme,
-        images,
-        features,
-        steps,
-        faq,
-        scenes,
-        lightOn,
-        brightness,
-        activeScene,
-        statusMessage,
-        lightLevel,
-        toggleLight,
-        changeBrightness,
-        applyScene
-      };
+      return { year: new Date().getFullYear(), menuOpen, evening, toggleTheme, images, features, steps, faq, scenes, lightOn, brightness, activeScene, statusMessage, lightLevel, toggleLight, changeBrightness, applyScene };
     }
   }).mount('#app');
 
